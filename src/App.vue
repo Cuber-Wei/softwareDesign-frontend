@@ -11,6 +11,24 @@
 
 <style>
 #app {
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.bytemd-toolbar-icon.bytemd-tippy.bytemd-tippy-right:last-child {
+  display: none;
+}
+
+::-webkit-scrollbar {
+  width: 0 !important;
+}
+
+::-webkit-scrollbar {
+  width: 0 !important;
+  height: 0;
 }
 </style>
 <script lang="ts" setup>

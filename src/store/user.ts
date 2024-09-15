@@ -14,7 +14,8 @@ export default {
   }),
   getters,
   actions: {
-    async getLoginUser({ commit, state }, payload) {
+    //登录，修改信息
+    async getLoginUser({ commit, state }) {
       //从远程请求登录信息
       const res = await UserControllerService.getLoginUserUsingGet();
       if (res.code === 0) {
@@ -26,10 +27,24 @@ export default {
         });
       }
     },
+    //登出
+    async logoutUser({ commit, state }) {
+      // 后端登出
+      const res = await UserControllerService.userLogoutUsingPost();
+      if (res.code === 0) {
+        commit("logoutUser");
+      }
+    },
   },
   mutations: {
     updateUser(state, payload) {
       state.loginUser = payload;
+    },
+    logoutUser(state) {
+      state.loginUser = {
+        userName: "未登录",
+        userRole: ACCESSENUM.NOT_LOGIN,
+      };
     },
   },
 } as StoreOptions<any>;

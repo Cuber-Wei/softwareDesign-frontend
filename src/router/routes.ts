@@ -1,11 +1,14 @@
 import { RouteRecordRaw } from "vue-router";
-import HomeView from "../views/HomeView.vue";
-import AdminView from "@/views/AdminView.vue";
 import NotFoundView from "../views/404View.vue";
 import ACCESSENUM from "@/access/accessEnum";
-import UserLoginView from "@/views/user/UserLoginView.vue";
-import UserRegisterView from "@/views/user/UserRegisterView.vue";
 import UserLayout from "@/layouts/UserLayout.vue";
+import AddQuestionView from "@/views/question/AddQuestionView.vue";
+import UserCenterView from "@/views/UserCenterView.vue";
+import UserRegisterView from "@/views/user/UserRegisterView.vue";
+import UserLoginView from "@/views/user/UserLoginView.vue";
+import ManageQuestionView from "@/views/question/ManageQuestionView.vue";
+import QuestionsView from "@/views/question/QuestionsView.vue";
+import ViewQuestionView from "@/views/question/ViewQuestionView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -30,27 +33,56 @@ export const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/",
-    name: "题目",
-    component: HomeView,
+    name: "浏览题目",
+    component: QuestionsView,
     meta: {
       hideInMenu: false,
     },
   },
   {
-    path: "/about",
-    name: "关于",
-    component: () => import("@/views/AboutView.vue"),
+    path: "/view/question/:id",
+    name: "在线做题",
+    component: ViewQuestionView,
+    props: true,
     meta: {
-      hideInMenu: false,
+      hideInMenu: true,
+      access: ACCESSENUM.USER,
     },
   },
   {
-    path: "/admin",
-    name: "管理员",
-    component: AdminView,
+    path: "/add/question",
+    name: "创建题目",
+    component: AddQuestionView,
     meta: {
       hideInMenu: false,
       access: ACCESSENUM.ADMIN,
+    },
+  },
+  {
+    path: "/update/question",
+    name: "更新题目",
+    component: AddQuestionView,
+    meta: {
+      hideInMenu: true,
+      access: ACCESSENUM.ADMIN,
+    },
+  },
+  {
+    path: "/manage/question",
+    name: "管理题目",
+    component: ManageQuestionView,
+    meta: {
+      hideInMenu: false,
+      access: ACCESSENUM.ADMIN,
+    },
+  },
+  {
+    path: "/center",
+    name: "用户中心",
+    component: UserCenterView,
+    meta: {
+      hideInMenu: true,
+      access: ACCESSENUM.USER,
     },
   },
   {

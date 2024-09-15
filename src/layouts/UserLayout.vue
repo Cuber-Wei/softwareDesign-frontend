@@ -4,13 +4,13 @@
       <a-layout-header class="header">
         <a-space>
           <img class="logo" src="@/assets/oj-logo.gif" />
-          <div>NUAA OJ</div>
+          <div>My OJ</div>
         </a-space>
       </a-layout-header>
       <a-layout-content class="content">
         <router-view />
       </a-layout-content>
-      <a-layout-footer class="footer"> NUAA Online Judge</a-layout-footer>
+      <a-layout-footer class="footer"> My Online Judge</a-layout-footer>
     </a-layout>
   </div>
 </template>
@@ -35,6 +35,7 @@ export default defineComponent({});
 }
 
 #userLayout .footer {
+  background-color: white;
   padding: 16px;
   position: sticky;
   bottom: 0;

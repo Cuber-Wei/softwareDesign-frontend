@@ -17,9 +17,6 @@
           placeholder="请输入密码"
         />
       </a-form-item>
-      <!--      <a-form-item field="isRead">-->
-      <!--        <a-checkbox v-model="form.isRead"> 我已阅读</a-checkbox>-->
-      <!--      </a-form-item>-->
       <a-form-item>
         <a-button
           html-type="submit"
@@ -29,6 +26,7 @@
         </a-button>
       </a-form-item>
     </a-form>
+    <div>未有账号？<a href="/user/register">点此注册</a>!</div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -49,14 +47,24 @@ const form = reactive({
 } as UserLoginRequest);
 
 const handleSubmit = async () => {
+  const redirectUrl = window.location.search;
   const res = await UserControllerService.userLoginUsingPost(form);
   if (res.code === 0) {
     await store.dispatch("user/getLoginUser");
-    // 登录成功跳转到主页
-    await router.push({
-      path: "/",
-      replace: true,
-    });
+    // 登录成功跳转页面
+    // 重定向
+    if (redirectUrl.startsWith("?redirect=")) {
+      await router.push({
+        path: redirectUrl.split("?redirect=")[1],
+        replace: true,
+      });
+    } else {
+      // 主页
+      await router.push({
+        path: "/",
+        replace: true,
+      });
+    }
   } else {
     message.error("登录失败" + res.message);
   }
