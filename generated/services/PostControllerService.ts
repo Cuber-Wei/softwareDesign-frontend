@@ -29,7 +29,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_long_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post/add",
+      url: "/api/post/add",
       body: postAddRequest,
       errors: {
         401: `Unauthorized`,
@@ -51,7 +51,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_boolean_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post/delete",
+      url: "/api/post/delete",
       body: deleteRequest,
       errors: {
         401: `Unauthorized`,
@@ -73,7 +73,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_boolean_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post/edit",
+      url: "/api/post/edit",
       body: postEditRequest,
       errors: {
         401: `Unauthorized`,
@@ -94,7 +94,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_PostVO_> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/post/get/vo",
+      url: "/api/post/get/vo",
       query: {
         id: id,
       },
@@ -118,7 +118,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_Page_Post_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post/list/page",
+      url: "/api/post/list/page",
       body: postQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -140,7 +140,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_Page_PostVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post/list/page/vo",
+      url: "/api/post/list/page/vo",
       body: postQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -162,7 +162,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_Page_PostVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post/my/list/page/vo",
+      url: "/api/post/my/list/page/vo",
       body: postQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -184,7 +184,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_Page_PostVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post/search/page/vo",
+      url: "/api/post/search/page/vo",
       body: postQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -206,7 +206,7 @@ export class PostControllerService {
   ): CancelablePromise<BaseResponse_boolean_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post/update",
+      url: "/api/post/update",
       body: postUpdateRequest,
       errors: {
         401: `Unauthorized`,

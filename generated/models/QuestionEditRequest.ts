@@ -8,9 +8,9 @@ import type { JudgeConfig } from "./JudgeConfig";
 export type QuestionEditRequest = {
   answer?: string;
   content?: string;
-  id?: number;
   judgeCase?: Array<JudgeCase>;
   judgeConfig?: JudgeConfig;
-  tags?: Array<string>;
+  questionId?: number;
+  tag?: Array<string>;
   title?: string;
 };

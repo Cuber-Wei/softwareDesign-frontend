@@ -11,7 +11,7 @@ import type { BaseResponse_User_ } from "../models/BaseResponse_User_";
 import type { BaseResponse_UserVO_ } from "../models/BaseResponse_UserVO_";
 import type { DeleteRequest } from "../models/DeleteRequest";
 import type { UserAddRequest } from "../models/UserAddRequest";
-import type { UserLoginRequest } from "../models/UserLoginRequest";
+import type { UserLoginWithAccountRequest } from "../models/UserLoginWithAccountRequest";
 import type { UserQueryRequest } from "../models/UserQueryRequest";
 import type { UserRegisterRequest } from "../models/UserRegisterRequest";
 import type { UserUpdateMyRequest } from "../models/UserUpdateMyRequest";
@@ -33,7 +33,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_long_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/add",
+      url: "/api/user/add",
       body: userAddRequest,
       errors: {
         401: `Unauthorized`,
@@ -55,7 +55,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_boolean_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/delete",
+      url: "/api/user/delete",
       body: deleteRequest,
       errors: {
         401: `Unauthorized`,
@@ -76,7 +76,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_User_> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/user/get",
+      url: "/api/user/get",
       query: {
         id: id,
       },
@@ -96,7 +96,7 @@ export class UserControllerService {
   public static getLoginUserUsingGet(): CancelablePromise<BaseResponse_LoginUserVO_> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/user/get/login",
+      url: "/api/user/get/login",
       errors: {
         401: `Unauthorized`,
         403: `Forbidden`,
@@ -116,7 +116,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_UserVO_> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/user/get/vo",
+      url: "/api/user/get/vo",
       query: {
         id: id,
       },
@@ -140,7 +140,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_Page_User_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/list/page",
+      url: "/api/user/list/page",
       body: userQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -162,7 +162,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_Page_UserVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/list/page/vo",
+      url: "/api/user/list/page/vo",
       body: userQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -174,18 +174,18 @@ export class UserControllerService {
 
   /**
    * userLogin
-   * @param userLoginRequest userLoginRequest
+   * @param userLoginWithAccountRequest userLoginWithAccountRequest
    * @returns BaseResponse_LoginUserVO_ OK
    * @returns any Created
    * @throws ApiError
    */
   public static userLoginUsingPost(
-    userLoginRequest: UserLoginRequest
+    userLoginWithAccountRequest: UserLoginWithAccountRequest
   ): CancelablePromise<BaseResponse_LoginUserVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/login",
-      body: userLoginRequest,
+      url: "/api/user/login",
+      body: userLoginWithAccountRequest,
       errors: {
         401: `Unauthorized`,
         403: `Forbidden`,
@@ -205,7 +205,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_LoginUserVO_> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/user/login/wx_open",
+      url: "/api/user/login/wx_open",
       query: {
         code: code,
       },
@@ -228,7 +228,7 @@ export class UserControllerService {
   > {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/logout",
+      url: "/api/user/logout",
       errors: {
         401: `Unauthorized`,
         403: `Forbidden`,
@@ -249,7 +249,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_long_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/register",
+      url: "/api/user/register",
       body: userRegisterRequest,
       errors: {
         401: `Unauthorized`,
@@ -271,7 +271,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_boolean_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/update",
+      url: "/api/user/update",
       body: userUpdateRequest,
       errors: {
         401: `Unauthorized`,
@@ -293,7 +293,7 @@ export class UserControllerService {
   ): CancelablePromise<BaseResponse_boolean_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/user/update/my",
+      url: "/api/user/update/my",
       body: userUpdateMyRequest,
       errors: {
         401: `Unauthorized`,

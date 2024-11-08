@@ -5,15 +5,15 @@
 export type PostQueryRequest = {
   content?: string;
   current?: number;
-  favourUserId?: number;
-  id?: number;
-  notId?: number;
-  orTags?: Array<string>;
+  notPostId?: number;
+  orTag?: Array<string>;
   pageSize?: number;
+  postId?: number;
+  reviewStatus?: number;
   searchText?: string;
   sortField?: string;
   sortOrder?: string;
-  tags?: Array<string>;
+  tag?: Array<string>;
   title?: string;
   userId?: number;
 };

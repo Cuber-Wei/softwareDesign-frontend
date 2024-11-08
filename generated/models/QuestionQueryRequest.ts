@@ -6,11 +6,11 @@ export type QuestionQueryRequest = {
   answer?: string;
   content?: string;
   current?: number;
-  id?: number;
   pageSize?: number;
+  questionId?: number;
   sortField?: string;
   sortOrder?: string;
-  tags?: Array<string>;
+  tag?: Array<string>;
   title?: string;
   userId?: number;
 };

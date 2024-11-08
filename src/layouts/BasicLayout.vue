@@ -4,11 +4,13 @@
       <a-layout-header class="header">
         <GlobalHeader />
       </a-layout-header>
-      <div class="container">
-        <div v-if="route.path === '/center'" class="userCenterView">
+      <div v-if="route.path.startsWith('/center')" class="userContainer">
+        <a-layout-content class="userCenterView">
           <UserCenterView />
-        </div>
-        <a-layout-content v-else class="content">
+        </a-layout-content>
+      </div>
+      <div v-else class="container">
+        <a-layout-content class="content">
           <router-view />
         </a-layout-content>
       </div>
@@ -55,6 +57,14 @@ export default defineComponent({
   overflow: auto;
   box-shadow: #aaa 1px 1px 4px;
   border-radius: 16px;
+}
+
+.userContainer {
+  position: relative;
+  margin: calc(0.5rem + 100px) 2% calc(0.5rem + 50px) 2%;
+  height: calc(100vh - 150px - 1rem);
+  overscroll-behavior: contain;
+  overflow: auto;
 }
 
 #basicLayout .content {

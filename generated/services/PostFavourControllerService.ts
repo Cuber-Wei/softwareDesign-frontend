@@ -24,7 +24,7 @@ export class PostFavourControllerService {
   ): CancelablePromise<BaseResponse_int_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post_favour/",
+      url: "/api/post_favour/",
       body: postFavourAddRequest,
       errors: {
         401: `Unauthorized`,
@@ -46,7 +46,7 @@ export class PostFavourControllerService {
   ): CancelablePromise<BaseResponse_Page_PostVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post_favour/list/page",
+      url: "/api/post_favour/list/page",
       body: postFavourQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -68,7 +68,7 @@ export class PostFavourControllerService {
   ): CancelablePromise<BaseResponse_Page_PostVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/post_favour/my/list/page",
+      url: "/api/post_favour/my/list/page",
       body: postQueryRequest,
       errors: {
         401: `Unauthorized`,

@@ -2,7 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type UserLoginRequest = {
-  userAccount?: string;
-  userPassword?: string;
+export type WriteUpUpdateRequest = {
+  content?: string;
+  tags?: Array<string>;
+  title?: string;
+  writeUpId?: number;
 };

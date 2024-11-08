@@ -5,6 +5,8 @@
 export type UserAddRequest = {
   userAccount?: string;
   userAvatar?: string;
+  userMail?: string;
   userName?: string;
+  userPhone?: string;
   userRole?: string;
 };

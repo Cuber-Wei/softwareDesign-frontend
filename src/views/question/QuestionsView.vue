@@ -8,9 +8,9 @@
         </a-form-item>
       </a-col>
       <a-col :span="10">
-        <a-form-item field="tags" label="标签" label-col-flex="80px">
+        <a-form-item field="tag" label="标签" label-col-flex="80px">
           <a-input-tag
-            v-model="searchParams.tags"
+            v-model="searchParams.tag"
             allow-clear
             class="formItem"
             placeholder="请输入标签"
@@ -18,7 +18,7 @@
         </a-form-item>
       </a-col>
       <a-col :span="4">
-        <a-button type="primary" style="width: 50%" @click="doSubmit"
+        <a-button style="width: 50%" type="primary" @click="doSubmit"
           >提交
         </a-button>
       </a-col>
@@ -46,9 +46,9 @@
       }"
       @page-change="onPageChange"
     >
-      <template #tags="{ record }">
+      <template #tag="{ record }">
         <a-space wrap>
-          <a-tag v-for="(item, index) of record.tags" :key="index" color="green"
+          <a-tag v-for="(item, index) of record.tag" :key="index" color="green"
             >{{ item }}
           </a-tag>
         </a-space>
@@ -86,7 +86,7 @@ const searchParams = ref({
   pageSize: 10,
   current: 1,
   title: "",
-  tags: [],
+  tag: [],
 });
 
 const loadData = async () => {
@@ -116,7 +116,7 @@ watchEffect(() => {
 const columns = [
   {
     title: "题号",
-    dataIndex: "id",
+    dataIndex: "questionId",
   },
   {
     title: "标题",
@@ -124,14 +124,14 @@ const columns = [
   },
   {
     title: "标签",
-    slotName: "tags",
+    slotName: "tag",
   },
   {
     title: "通过率",
     slotName: "acceptedRate",
   },
   {
-    title: "创建时间",
+    title: "发布时间",
     slotName: "createTime",
   },
   {
@@ -143,7 +143,7 @@ const columns = [
 const router = useRouter();
 const toQuestion = (question: Question) => {
   router.push({
-    path: `/view/question/${question.id}`,
+    path: `/view/question/${question.questionId}`,
   });
 };
 

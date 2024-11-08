@@ -8,7 +8,7 @@
             <a-col :span="3" style="min-height: 100px">
               <div style="place-items: center; display: grid">
                 <a-avatar :size="100">
-                  <img alt="avatar" src="../assets/test-avatar.jpg" />
+                  <img :src="currUser.userAvatar" alt="avatar" />
                 </a-avatar>
               </div>
             </a-col>
@@ -19,21 +19,25 @@
               <!--用户名-->
               <a-row>
                 <h1 class="nickName">
-                  {{ showData.userName }}
+                  {{ currUser.userName }}
                 </h1>
               </a-row>
               <!--分割-->
               <div style="margin: 16px 0"></div>
               <!--签名-->
               <a-row class="userProfile">
-                <div>{{ showData.userProfile }}</div>
+                <div>{{ currUser.userProfile }}</div>
               </a-row>
               <!--分割-->
               <div style="margin: 16px 0"></div>
               <!--其他信息 权限角色 id-->
               <a-row>
-                <div class="extraInfo">{{ showData.userRole }}</div>
-                <div class="extraInfo">uid:{{ showData.userId }}</div>
+                <a-tag bordered class="extraInfo" color="orangered"
+                  >role : {{ currUser.userRole }}
+                </a-tag>
+                <a-tag bordered class="extraInfo" color="gray"
+                  >uid : {{ currUser.userId }}
+                </a-tag>
               </a-row>
             </a-col>
           </a-row>
@@ -42,8 +46,14 @@
           <!--用户统计信息-->
           <a-row class="userStatistics">
             <a-col :span="12">
-              <a-button>发布帖子</a-button>
-              <a-button>修改资料</a-button>
+              <a-button class="userButton" @click="toEditDetail(currUser)"
+                >修改资料
+              </a-button>
+              <a-badge :count="9">
+                <a-button class="userButton" @click="toReview"
+                  >审核事项
+                </a-button>
+              </a-badge>
             </a-col>
           </a-row>
         </a-card>
@@ -58,47 +68,41 @@
     </a-layout>
   </div>
 </template>
-<script lang="ts">
+<script lang="ts" setup>
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
-import { UserControllerService } from "../../generated";
-import { ref } from "vue";
+import { UserControllerService, UserVO } from "../../generated";
+import { onMounted, ref } from "vue";
+import message from "@arco-design/web-vue/es/message";
 
-export default {
-  setup() {
-    const router = useRouter();
-    const store = useStore();
-    // 获取用户信息并且进行处理
-    let showData = ref({});
-    UserControllerService.getLoginUserUsingGet()
-      .then((res) => {
-        if (res.code === 0) {
-          showData.value = {
-            userName: res.data?.userName,
-            userAvatar: res.data?.userAvatar ?? "oj-logo.gif",
-            userProfile: res.data?.userProfile ?? "这是默认签名",
-            userRole: res.data?.userRole,
-            userId: res.data?.id,
-          };
-        } else {
-          showData.value = {
-            userName: "未登录",
-            userAvatar: "oj-logo.gif",
-            userProfile: "这是默认签名",
-            userRole: "未登录",
-            userId: -1,
-          };
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    return {
-      router,
-      store,
-      showData,
-    };
-  },
+const router = useRouter();
+
+// 获取用户信息并且进行处理
+let currUser = ref<UserVO>({});
+const loadData = async () => {
+  //拿到当前用户
+  const res = await UserControllerService.getUserVoByIdUsingGet(
+    router.currentRoute.value.params.id as string
+  );
+  if (res.code === 0) {
+    currUser.value = res.data;
+  } else {
+    message.error("加载失败！ " + res.message);
+  }
+};
+onMounted(() => {
+  loadData();
+});
+
+const toEditDetail = (data: any) => {
+  router.push({
+    path: `/user/edit/${data?.userId}`,
+  });
+};
+const toReview = () => {
+  router.push({
+    path: "/review",
+    replace: true,
+  });
 };
 </script>
 <style scoped>
@@ -137,14 +141,16 @@ export default {
 .extraInfo {
   margin-right: 6px;
   border-radius: 4px;
-  background-color: #dddddddd;
-  padding: 4px;
 }
 
 .userStatistics {
   height: 30%;
   display: flex;
   align-items: center;
+}
+
+.userButton {
+  margin: 0 0.5rem;
 }
 
 #userCenter .content {
@@ -154,6 +160,7 @@ export default {
 
 .post-show {
   padding: 16px;
+  min-height: 75vh;
   flex: 1;
 }
 </style>

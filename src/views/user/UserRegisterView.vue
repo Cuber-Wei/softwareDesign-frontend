@@ -2,35 +2,99 @@
   <div class="user-register">
     <h2 style="margin-bottom: 32px">用户注册</h2>
     <a-form
+      ref="formRef"
       :label-align="'right'"
       :layout="horizontal"
       :model="form"
+      :rules="rules"
       auto-label-width
       style="max-width: 480px; margin: 0 auto"
       @submit="handleSubmit"
     >
-      <a-form-item field="name" label="用户名" tooltip=" ">
-        <a-input v-model="form.userAccount" placeholder="请输入用户名" />
-      </a-form-item>
-      <a-form-item field="userPassword" label="密码" tooltip="密码不少于八位">
-        <a-input-password
-          v-model="form.userPassword"
-          placeholder="请输入密码"
-        />
+      <a-form-item
+        field="userAccount"
+        label="用户名"
+        tooltip="用户名长度应不小于2"
+        validate-trigger="blur"
+      >
+        <a-input
+          v-model="form.userAccount"
+          :max-length="{ length: 20, errorOnly: true }"
+          allow-clear
+          placeholder="请输入用户名"
+          show-word-limit
+        >
+          <template #prefix>
+            <IconUser />
+          </template>
+        </a-input>
       </a-form-item>
       <a-form-item
         field="userPassword"
+        label="密码"
+        tooltip="密码长度应不小于8"
+        validate-trigger="blur"
+      >
+        <a-input-password
+          v-model="form.userPassword"
+          allow-clear
+          placeholder="请输入密码"
+        >
+          <template #prefix>
+            <IconLock />
+          </template>
+        </a-input-password>
+      </a-form-item>
+      <a-form-item
+        field="checkPassword"
         label="确认密码"
-        tooltip="密码不少于八位"
+        tooltip="请重复输入密码加以确认"
+        validate-trigger="blur"
       >
         <a-input-password
           v-model="form.checkPassword"
-          placeholder="请确认密码"
+          allow-clear
+          placeholder="确认密码"
+        >
+          <template #prefix>
+            <IconLock />
+          </template>
+        </a-input-password>
+      </a-form-item>
+      <a-form-item field="phone" label="手机号" tooltip="用于获取验证码">
+        <a-input v-model="form.phone" placeholder="请输入手机号">
+          <template #prefix>
+            <IconPhone />
+            （+86）
+          </template>
+        </a-input>
+      </a-form-item>
+      <a-form-item
+        field="verityCode"
+        label="验证码"
+        tooltip="输入手机短信收到的验证码"
+      >
+        <a-verification-code
+          v-model="form.verityCode"
+          :disabled="verityCodeProps.disabled"
+          :error="verityCodeProps.error"
+          style="width: 300px"
+          @finish="onFinish"
         />
+        <a-button style="margin-left: 16px" type="primary" @click="getCode"
+          >获取验证码
+        </a-button>
+      </a-form-item>
+      <a-form-item field="email" label="邮箱" tooltip="用于辅助登录和找回密码">
+        <a-input v-model="form.email" placeholder="example@mail.com">
+          <template #prefix>
+            <IconEmail />
+          </template>
+        </a-input>
       </a-form-item>
       <a-form-item field="isRead">
         <a-checkbox v-model="form.isRead"
-          >我已阅读<a href="">用户协议</a></a-checkbox
+          >我已阅读并同意<a href="">用户协议</a></a-checkbox
         >
       </a-form-item>
       <a-form-item>
@@ -41,25 +105,50 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 import {
   UserControllerService,
-  type UserLoginRequest,
+  UserLoginWithAccountRequest,
 } from "../../../generated";
-import { useRouter } from "vue-router";
 import message from "@arco-design/web-vue/es/message";
+import {
+  IconEmail,
+  IconLock,
+  IconPhone,
+  IconUser,
+} from "@arco-design/web-vue/es/icon";
 
+const verityCodeProps = ref({
+  disabled: false,
+  error: false,
+  answer: "aaaaaa",
+});
+const trueCode = ref("654321");
+const formRef = ref(null);
 const router = useRouter();
 const form = reactive({
   userAccount: "",
   userPassword: "",
   checkPassword: "",
+  email: "",
+  phone: "",
+  verityCode: "",
   isRead: false,
-} as UserLoginRequest);
-
+} as UserLoginWithAccountRequest);
+const onFinish = (value) => {
+  if (value !== trueCode.value) {
+    verityCodeProps.value.error = true;
+    message.error("验证码错误！");
+    form.verityCode = "";
+  } else {
+    verityCodeProps.value.error = false;
+    verityCodeProps.value.disabled = true;
+  }
+};
 const handleSubmit = async () => {
   if (!form.isRead) {
-    message.error("请阅读下方用户协议！");
+    message.error("请阅读并同意下方用户协议！");
     return false;
   }
   if (form.userAccount === "" || form.userPassword === "") {
@@ -76,5 +165,72 @@ const handleSubmit = async () => {
   } else {
     message.error("注册失败" + res.message);
   }
+};
+
+const rules = {
+  userAccount: [
+    {
+      required: true,
+      message: "请输入用户名！",
+    },
+  ],
+  userPassword: [
+    {
+      required: true,
+      message: "请输入密码！",
+    },
+  ],
+  checkPassword: [
+    {
+      required: true,
+      message: "请确认密码！",
+    },
+    {
+      validator: (value, cb) => {
+        if (value !== form.userPassword) {
+          cb("two passwords do not match");
+        } else {
+          cb();
+        }
+      },
+    },
+  ],
+  email: [
+    {
+      type: "email",
+      required: false,
+      message: "请输入邮箱！",
+    },
+  ],
+  phone: [
+    {
+      required: true,
+      message: "请输入手机号！",
+    },
+    {
+      validator: (value, cb) => {
+        if (/^1([3456789])\d{9}$/.test(value)) {
+          return true;
+        } else {
+          cb("手机格式不正确");
+          return false;
+        }
+      },
+    },
+  ],
+  verityCode: [
+    {
+      required: true,
+      message: "请输入验证码！",
+    },
+    {
+      minLength: 6,
+      message: "验证码未填完全！",
+    },
+    {
+      match: /^\d+$/,
+      message: "应为全数字！",
+    },
+  ],
 };
 </script>

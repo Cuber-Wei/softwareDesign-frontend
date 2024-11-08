@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { BaseResponse_long_ } from "../models/BaseResponse_long_";
 import type { BaseResponse_Page_QuestionSubmitVO_ } from "../models/BaseResponse_Page_QuestionSubmitVO_";
+import type { BaseResponse_QuestionSubmitVO_ } from "../models/BaseResponse_QuestionSubmitVO_";
 import type { QuestionSubmitAddRequest } from "../models/QuestionSubmitAddRequest";
 import type { QuestionSubmitQueryRequest } from "../models/QuestionSubmitQueryRequest";
 import type { CancelablePromise } from "../core/CancelablePromise";
@@ -23,8 +24,31 @@ export class QuestionSubmitControllerService {
   ): CancelablePromise<BaseResponse_long_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/question_submit/",
+      url: "/api/question_submit/",
       body: questionSubmitAddRequest,
+      errors: {
+        401: `Unauthorized`,
+        403: `Forbidden`,
+        404: `Not Found`,
+      },
+    });
+  }
+
+  /**
+   * getQuestionSubmitVOById
+   * @param id id
+   * @returns BaseResponse_QuestionSubmitVO_ OK
+   * @throws ApiError
+   */
+  public static getQuestionSubmitVoByIdUsingGet(
+    id?: number
+  ): CancelablePromise<BaseResponse_QuestionSubmitVO_> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/question_submit/get/vo",
+      query: {
+        id: id,
+      },
       errors: {
         401: `Unauthorized`,
         403: `Forbidden`,
@@ -45,7 +69,7 @@ export class QuestionSubmitControllerService {
   ): CancelablePromise<BaseResponse_Page_QuestionSubmitVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/question_submit/list/page",
+      url: "/api/question_submit/list/page",
       body: questionSubmitQueryRequest,
       errors: {
         401: `Unauthorized`,

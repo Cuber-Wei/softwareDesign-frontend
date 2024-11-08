@@ -1,0 +1,22 @@
+[
+  {
+    "id": 0,
+    "lang": "C",
+    "code": "```c\n#include <stdio.h>\nint main() {\n    printf(\"404 Not Found\\n\");\n    return 0;\n}\n```"
+  },
+  {
+    "id": 1,
+    "lang": "C++",
+    "code": "```cpp\n#include <iostream>\nint main() {\n    std::cout << \"404 Not Found\" << std::endl;\n    return 0;\n}\n```"
+  },
+  {
+    "id": 2,
+    "lang": "Python",
+    "code": "```python\nprint(\"404 Not Found\")\n```"
+  },
+  {
+    "id": 3,
+    "lang": "Java",
+    "code": "```java\npublic class Main {\n    public static void main(String[] args) {\n        System.out.println(\"404 Not Found\");\n    }\n}"
+  }
+]

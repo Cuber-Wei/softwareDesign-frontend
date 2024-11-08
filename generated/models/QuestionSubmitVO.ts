@@ -9,10 +9,10 @@ import type { UserVO } from "./UserVO";
 export type QuestionSubmitVO = {
   code?: string;
   createTime?: string;
-  id?: number;
   judgeInfo?: JudgeInfo;
   language?: string;
   questionId?: number;
+  questionSubmitId?: number;
   questionVO?: QuestionVO;
   status?: number;
   updateTime?: string;

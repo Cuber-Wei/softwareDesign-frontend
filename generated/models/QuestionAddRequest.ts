@@ -10,6 +10,6 @@ export type QuestionAddRequest = {
   content?: string;
   judgeCase?: Array<JudgeCase>;
   judgeConfig?: JudgeConfig;
-  tags?: Array<string>;
+  tag?: Array<string>;
   title?: string;
 };

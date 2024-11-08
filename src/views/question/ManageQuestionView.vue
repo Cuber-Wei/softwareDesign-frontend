@@ -12,6 +12,26 @@
       }"
       @page-change="onPageChange"
     >
+      <template #tag="{ record }">
+        <a-space wrap>
+          <a-tag
+            v-for="(item, index) of JSON.parse(record.tag)"
+            :key="index"
+            color="green"
+            >{{ item }}
+          </a-tag>
+        </a-space>
+      </template>
+      <template #createTime="{ record }">
+        <a-space>
+          {{ moment(record.createTime).format("YYYY-MM-DD-HH:MM:SS") }}
+        </a-space>
+      </template>
+      <template #updateTime="{ record }">
+        <a-space>
+          {{ moment(record.updateTime).format("YYYY-MM-DD-HH:MM:SS") }}
+        </a-space>
+      </template>
       <template #optional="{ record }">
         <a-space>
           <a-button type="primary" @click="doUpdate(record)">修改</a-button>
@@ -35,8 +55,7 @@ import { onMounted, ref, watchEffect } from "vue";
 import { Question, QuestionControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
-
-const show = ref(true);
+import moment from "moment/moment";
 
 const dataList = ref([]);
 const total = ref(0);
@@ -52,7 +71,7 @@ const loadData = async () => {
   if (res.code === 0) {
     dataList.value = res.data.records;
     total.value = res.data.total;
-    console.log(res.data);
+    console.log(res.data.records);
   } else {
     message.error("加载数据失败！ " + res.message);
   }
@@ -69,7 +88,7 @@ watchEffect(() => {
 const columns = [
   {
     title: "ID",
-    dataIndex: "id",
+    dataIndex: "questionId",
   },
   {
     title: "标题",
@@ -85,7 +104,7 @@ const columns = [
   },
   {
     title: "标签",
-    dataIndex: "tags",
+    slotName: "tag",
   },
   {
     title: "提交数",
@@ -97,11 +116,11 @@ const columns = [
   },
   {
     title: "创建时间",
-    dataIndex: "createTime",
+    slotName: "createTime",
   },
   {
     title: "更新时间",
-    dataIndex: "updateTime",
+    slotName: "updateTime",
   },
   {
     title: "题目配置",
@@ -129,13 +148,13 @@ const doUpdate = (question: Question) => {
   router.push({
     path: "/update/question",
     query: {
-      id: question.id,
+      id: question.questionId,
     },
   });
 };
 const doDelete = async (question: Question) => {
   const res = await QuestionControllerService.deleteQuestionUsingPost({
-    id: question.id,
+    id: question.questionId,
   });
   if (res.code === 0) {
     // 更新页面

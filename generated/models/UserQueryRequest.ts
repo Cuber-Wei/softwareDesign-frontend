@@ -4,13 +4,15 @@
 /* eslint-disable */
 export type UserQueryRequest = {
   current?: number;
-  id?: number;
   mpOpenId?: string;
   pageSize?: number;
   sortField?: string;
   sortOrder?: string;
   unionId?: string;
+  userId?: number;
+  userMail?: string;
   userName?: string;
+  userPhone?: string;
   userProfile?: string;
   userRole?: string;
 };

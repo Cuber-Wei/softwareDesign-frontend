@@ -30,6 +30,15 @@
   width: 0 !important;
   height: 0;
 }
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("@/assets/JetBrainsMono-Regular.ttf") format("truetype");
+}
+
+pre code {
+  font-family: "JetBrains Mono", serif;
+}
 </style>
 <script lang="ts" setup>
 import BasicLayout from "@/layouts/BasicLayout.vue";

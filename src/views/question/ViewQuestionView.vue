@@ -7,14 +7,14 @@
             <div class="docArea">
               <a-card
                 v-if="question"
+                :bordered="false"
                 :title="question.title"
                 style="margin-top: 10px; height: 95%; flex: 1"
-                :bordered="false"
               >
                 <template #extra>
                   <a-space wrap>
                     <a-tag
-                      v-for="(item, index) of question.tags"
+                      v-for="(item, index) of question.tag"
                       :key="index"
                       color="green"
                       >{{ item }}
@@ -22,8 +22,8 @@
                   </a-space>
                 </template>
                 <a-descriptions
-                  title="判题信息"
                   :column="{ xs: 1, md: 2, lg: 3 }"
+                  title="题目限制"
                 >
                   <a-descriptions-item label="时间限制">
                     <a-tag>{{ question.judgeConfig.timeLimit }} ms</a-tag>
@@ -39,12 +39,91 @@
               </a-card>
             </div>
           </a-tab-pane>
-          <a-tab-pane key="answer" title="题解" disabled> 题目题解</a-tab-pane>
-          <a-tab-pane key="comment" title="评论"> 评论区</a-tab-pane>
+          <a-tab-pane key="answer" title="题解">
+            <div class="docArea">
+              <h2>题目题解</h2>
+              <MdEditor
+                :handle-change="onContentChange"
+                :value="writeup.content || ' '"
+                class="formItem"
+              />
+              <a-button
+                style="margin-top: 16px"
+                type="primary"
+                @click="doCommentSubmit"
+                >提交
+              </a-button>
+              <a-divider />
+              <WriteUpCard />
+            </div>
+          </a-tab-pane>
+          <a-tab-pane key="submits" title="提交记录">
+            <div class="docArea">
+              <h2>提交记录</h2>
+              <a-descriptions
+                :column="{ xs: 1, md: 2, lg: 3 }"
+                title="判题信息"
+              >
+                <a-descriptions-item label="题目标题">
+                  <a-tag>{{ question?.title }}</a-tag>
+                </a-descriptions-item>
+                <a-descriptions-item label="题目ID">
+                  <a-tag>{{ question?.questionId }}</a-tag>
+                </a-descriptions-item>
+                <a-checkbox v-model="isPersonal" @change="checkboxChange"
+                  >只看自己
+                </a-checkbox>
+              </a-descriptions>
+              <a-divider :size="0"></a-divider>
+              <a-space
+                >每页题目数量
+                <a-input-number
+                  v-model="searchParams.pageSize"
+                  min="1"
+                  placeholder="每页题目数量"
+                  size="small"
+                  style="width: 200px"
+                />
+              </a-space>
+              <a-divider :size="0"></a-divider>
+              <a-table
+                :columns="columns"
+                :data="dataList"
+                :pagination="{
+                  showTotal: true,
+                  pageSize: searchParams.pageSize,
+                  current: searchParams.current,
+                  total,
+                }"
+                @page-change="onPageChange"
+              >
+                <template #userVO="{ record }">
+                  <a-space>
+                    {{ record.userVO.userName }}
+                  </a-space>
+                </template>
+                <template #createTime="{ record }">
+                  <a-space>
+                    {{
+                      moment(record.createTime).format("YYYY-MM-DD-HH:MM:SS")
+                    }}
+                  </a-space>
+                </template>
+                <template #optional="{ record }">
+                  <a-space>
+                    <a-button type="primary" @click="toDetail(record)"
+                      >查看详情
+                    </a-button>
+                  </a-space>
+                </template>
+              </a-table>
+            </div>
+          </a-tab-pane>
         </a-tabs>
       </a-col>
+
       <a-col :md="12" :xs="24" class="codeArea">
-        <a-row class="operationLine" :column="{ xs: 1, md: 2 }">
+        <a-row :column="{ xs: 1, md: 2 }" class="operationLine">
           <a-col :span="8">
             <a-cascader
               v-model="form.language"
@@ -54,17 +133,17 @@
             />
           </a-col>
           <a-col :span="8" style="margin-left: 20px">
-            <a-button type="primary" style="width: 200px" @click="doSubmit"
+            <a-button style="width: 200px" type="primary" @click="doSubmit"
               >提交代码
             </a-button>
           </a-col>
         </a-row>
         <CodeEditor
           ref="monacoEdit"
-          :value="form.code"
-          :readonly="false"
-          :language="form.language"
           :handle-change="onCodeChange"
+          :language="form.language"
+          :readonly="false"
+          :value="form.code"
           style="height: 95%; flex: 1"
         ></CodeEditor>
       </a-col>
@@ -72,18 +151,31 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { defineProps, onMounted, ref, withDefaults } from "vue";
+import { defineProps, onMounted, ref, watchEffect, withDefaults } from "vue";
 import message from "@arco-design/web-vue/es/message";
 import {
+  PostAddRequest,
   QuestionAddRequest,
   QuestionControllerService,
   QuestionSubmitAddRequest,
   QuestionSubmitControllerService,
+  QuestionSubmitVO,
 } from "../../../generated";
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
+import WriteUpCard from "@/components/WriteUpCard.vue";
+import MdEditor from "@/components/MdEditor.vue";
+import { useRouter } from "vue-router";
+import moment from "moment/moment";
+import { useStore } from "vuex";
 
+const store = useStore();
+const currUser = store.state.user.loginUser;
 const question = ref<QuestionAddRequest>();
+const writeup = ref({
+  content: "# 贡献题解...",
+} as PostAddRequest);
+const isPersonal = ref(false); //只看自己？
 const languageOptions = [
   {
     value: "java",
@@ -112,13 +204,31 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const loadData = async () => {
-  const res = await QuestionControllerService.getQuestionVoByIdUsingGet(
+  //拿到当前题目
+  const questionRes = await QuestionControllerService.getQuestionVoByIdUsingGet(
     props.id as string
   );
-  if (res.code === 0) {
-    question.value = res.data;
+  if (questionRes.code === 0) {
+    question.value = questionRes.data;
+    // writeup.value.questionId = question.value.questionId;
   } else {
-    message.error("加载失败！ " + res.message);
+    message.error("加载失败！ " + questionRes.message);
+  }
+  // 校验分页数量
+  if (!searchParams.value.pageSize || searchParams.value.pageSize <= 0) {
+    searchParams.value.pageSize = 5;
+  }
+  const questionSubmitRes =
+    await QuestionSubmitControllerService.listQuestionSubmitByPageUsingPost(
+      searchParams.value
+    );
+  if (questionSubmitRes.code === 0) {
+    console.log(questionSubmitRes.data);
+    dataList.value = questionSubmitRes.data.records;
+    // total.value = questionSubmitRes.data.total;
+    total.value = questionSubmitRes.data.records.length;
+  } else {
+    message.error("加载数据失败！ " + questionSubmitRes.message);
   }
 };
 onMounted(() => {
@@ -146,6 +256,68 @@ const doSubmit = async () => {
       message.error("提交失败！ " + res.message);
     }
   }
+};
+//提交记录相关
+const dataList = ref([]);
+const total = ref(0);
+const searchParams = ref({
+  questionId: props.id,
+  pageSize: 10,
+  current: 1,
+});
+
+// 监听分页变量，改变时更新页面
+watchEffect(() => {
+  loadData();
+});
+
+const columns = [
+  {
+    title: "记录id",
+    dataIndex: "questionSubmitId",
+  },
+  {
+    title: "提交者",
+    slotName: "userVO",
+  },
+  {
+    title: "语言",
+    dataIndex: "language",
+  },
+  {
+    title: "状态",
+    slotName: "status",
+  },
+  {
+    title: "提交时间",
+    slotName: "createTime",
+  },
+  {
+    title: "操作",
+    slotName: "optional",
+  },
+];
+// 跳转到做题页面
+const router = useRouter();
+const checkboxChange = () => {
+  if (isPersonal.value) {
+    searchParams.value = {
+      ...searchParams.value,
+      userId: currUser.userId,
+    };
+  }
+};
+const toDetail = (questionSubmit: QuestionSubmitVO) => {
+  router.push({
+    path: `/view/questionSubmit/${questionSubmit.questionSubmitId}`,
+  });
+};
+
+const onPageChange = (page: number) => {
+  searchParams.value = {
+    ...searchParams.value,
+    current: page,
+  };
 };
 </script>
 <style>

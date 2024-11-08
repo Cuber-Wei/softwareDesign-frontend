@@ -4,7 +4,7 @@
 /* eslint-disable */
 export type PostUpdateRequest = {
   content?: string;
-  id?: number;
+  postId?: number;
   tags?: Array<string>;
   title?: string;
 };

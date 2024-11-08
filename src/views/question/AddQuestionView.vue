@@ -1,6 +1,6 @@
 <template>
   <div id="AddQuestionView">
-    <h1 v-if="!isUpdatePage">创建题目</h1>
+    <h1 v-if="!isUpdatePage">发布题目</h1>
     <h1 v-else>更新题目</h1>
     <a-form :model="question" label-align="left" @submit="handleSubmit">
       <a-form-item field="title" label="标题">
@@ -24,9 +24,9 @@
           class="formItem"
         />
       </a-form-item>
-      <a-form-item field="tags" label="标签">
+      <a-form-item field="tag" label="标签">
         <a-input-tag
-          v-model="question.tags"
+          v-model="question.tag"
           allow-clear
           class="formItem"
           placeholder="请输入标签"
@@ -142,7 +142,7 @@ const question = ref({
     stackLimit: 1000,
     timeLimit: 1000,
   },
-  tags: ["简单"],
+  tag: ["简单"],
   title: "A + B",
 } as QuestionAddRequest);
 
@@ -159,11 +159,10 @@ const loadData = async () => {
   );
   if (res.code === 0) {
     question.value = res.data;
-    console.log(question.value);
-    if (!question.value.tags) {
-      question.value.tags = ["简单"];
+    if (!question.value.tag) {
+      question.value.tag = ["简单"];
     } else {
-      question.value.tags = JSON.parse(question.value.tags);
+      question.value.tag = JSON.parse(question.value.tag);
     }
     if (!question.value.judgeConfig) {
       question.value.judgeConfig = {

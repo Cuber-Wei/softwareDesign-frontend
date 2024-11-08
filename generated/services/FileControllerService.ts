@@ -22,7 +22,7 @@ export class FileControllerService {
   ): CancelablePromise<BaseResponse_string_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/file/upload",
+      url: "/api/file/upload",
       query: {
         biz: biz,
       },

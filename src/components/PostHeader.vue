@@ -15,7 +15,7 @@
       <a-col :span="4" style="background-color: #ccc">
         <img
           alt="logo"
-          src="@/assets/oj-logo.gif"
+          src="@/assets/oj-logo.jpg"
           style="width: 100%; height: 100%"
         />
         />

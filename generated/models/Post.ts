@@ -5,11 +5,10 @@
 export type Post = {
   content?: string;
   createTime?: string;
-  favourNum?: number;
-  id?: number;
   isDelete?: number;
-  tags?: string;
-  thumbNum?: number;
+  postId?: number;
+  reviewStatus?: number;
+  tag?: string;
   title?: string;
   updateTime?: string;
   userId?: number;

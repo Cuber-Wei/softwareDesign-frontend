@@ -89,6 +89,10 @@ export class CancelablePromise<T> implements Promise<T> {
     return "Cancellable Promise";
   }
 
+  public get isCancelled(): boolean {
+    return this.#isCancelled;
+  }
+
   public then<TResult1 = T, TResult2 = never>(
     onFulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | null,
     onRejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null
@@ -123,9 +127,5 @@ export class CancelablePromise<T> implements Promise<T> {
     }
     this.#cancelHandlers.length = 0;
     if (this.#reject) this.#reject(new CancelError("Request aborted"));
-  }
-
-  public get isCancelled(): boolean {
-    return this.#isCancelled;
   }
 }

@@ -4,7 +4,7 @@
 /* eslint-disable */
 export type PostEditRequest = {
   content?: string;
-  id?: number;
-  tags?: Array<string>;
+  postId?: number;
+  tag?: Array<string>;
   title?: string;
 };
