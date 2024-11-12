@@ -114,8 +114,8 @@ watchEffect(() => {
 
 const columns = [
   {
-    title: "题号",
-    dataIndex: "id",
+    title: "帖子ID",
+    dataIndex: "postId",
   },
   {
     title: "标题",

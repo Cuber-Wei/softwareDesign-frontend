@@ -55,6 +55,9 @@
                   <IconLock />
                 </template>
               </a-input-password>
+              <a-link href="/user/forget" style="width: 100px"
+                >忘记密码？
+              </a-link>
             </a-form-item>
             <a-form-item>
               <a-button
@@ -63,7 +66,18 @@
                 type="primary"
                 >登录
               </a-button>
+              <a-button
+                type="primary"
+                style="width: 150px; margin: 0 auto"
+                @click="router.push('/')"
+                >返回首页
+              </a-button>
             </a-form-item>
+            <div>
+              未有账号？
+              <a-link href="/user/register">点此注册</a-link>
+              !
+            </div>
           </a-form>
         </a-tab-pane>
         <a-tab-pane key="2" class="inner-tabs" title="验证码登录">
@@ -77,20 +91,8 @@
             style="max-width: 480px; margin: 32px auto"
             @submit="handleSubmit"
           >
-            <a-form-item field="phone" label="手机号" tooltip="用于获取验证码">
-              <a-input v-model="form.phone" placeholder="请输入手机号">
-                <template #prefix>
-                  <IconPhone />
-                  （+86）
-                </template>
-              </a-input>
-            </a-form-item>
-            <a-form-item
-              field="email"
-              label="邮箱"
-              tooltip="邮箱与手机号至少必填一个"
-            >
-              <a-input v-model="form.email" placeholder="example@mail.com">
+            <a-form-item field="userMail" label="邮箱" tooltip="用于获取验证码">
+              <a-input v-model="form.userMail" placeholder="example@mail.com">
                 <template #prefix>
                   <IconEmail />
                 </template>
@@ -115,6 +117,18 @@
                 >获取验证码
               </a-button>
             </a-form-item>
+            <!--            <a-form-item-->
+            <!--              field="userPhone"-->
+            <!--              label="手机号"-->
+            <!--              tooltip="邮箱与手机号至少必填一个"-->
+            <!--            >-->
+            <!--              <a-input v-model="form.userPhone" placeholder="请输入手机号">-->
+            <!--                <template #prefix>-->
+            <!--                  <IconPhone />-->
+            <!--                  （+86）-->
+            <!--                </template>-->
+            <!--              </a-input>-->
+            <!--            </a-form-item>-->
             <a-form-item>
               <a-button
                 html-type="submit"
@@ -122,7 +136,18 @@
                 type="primary"
                 >登录
               </a-button>
+              <a-button
+                type="primary"
+                style="width: 150px; margin: 0 auto"
+                @click="router.push('/')"
+                >返回首页
+              </a-button>
             </a-form-item>
+            <div>
+              未有账号？
+              <a-link href="/user/register">点此注册</a-link>
+              !
+            </div>
           </a-form>
         </a-tab-pane>
         <a-tab-pane key="3" class="inner-tabs" title="微信扫码登录">
@@ -133,25 +158,18 @@
         </a-tab-pane>
       </a-tabs>
     </a-space>
-
-    <div>未有账号？<a href="/user/register">点此注册</a>!</div>
   </div>
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import {
   UserControllerService,
-  type UserLoginRequest,
+  type UserLoginWithAccountRequest,
 } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
-import {
-  IconEmail,
-  IconLock,
-  IconPhone,
-  IconUser,
-} from "@arco-design/web-vue/es/icon";
+import { IconEmail, IconLock, IconUser } from "@arco-design/web-vue/es/icon";
 
 const router = useRouter();
 const store = useStore();
@@ -159,10 +177,11 @@ const form = reactive({
   userAccount: "",
   userPassword: "",
   checkPassword: "",
-  email: "",
-  phone: "",
+  userMail: "",
+  userPhone: "",
   verityCode: "",
-} as UserLoginRequest);
+} as UserLoginWithAccountRequest);
+
 const trueCode = ref("654321");
 const formRef = ref(null);
 const verityCodeProps = ref({
@@ -231,14 +250,14 @@ const rules = {
       },
     },
   ],
-  email: [
+  userMail: [
     {
-      type: "email",
-      required: false,
+      type: "userMail",
+      required: true,
       message: "请输入邮箱！",
     },
   ],
-  phone: [
+  userPhone: [
     {
       required: false,
       message: "请输入手机号！",
@@ -287,7 +306,7 @@ const rules = {
 
 .inner-tabs {
   display: flex;
-  min-height: 50vh;
+  /*min-height: 45vh;*/
   flex-direction: column;
 }
 </style>

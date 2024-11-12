@@ -26,7 +26,7 @@
               <div style="margin: 16px 0"></div>
               <!--签名-->
               <a-row class="userProfile">
-                <div>{{ currUser.userProfile }}</div>
+                <div>{{ currUser.userProfile ?? "这是默认简介" }}</div>
               </a-row>
               <!--分割-->
               <div style="margin: 16px 0"></div>

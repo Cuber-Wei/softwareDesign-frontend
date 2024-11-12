@@ -70,16 +70,16 @@
                 :size="32"
                 :style="{ marginRight: '16px', marginBottom: '12px' }"
               />
-              <div :style="{ marginBottom: '12px' }">开始编写代码</div>
+              <div :style="{ marginBottom: '12px' }">前端界面框架基本完成</div>
             </a-row>
           </a-timeline-item>
-          <a-timeline-item label="2024-11-22" lineType="dashed">
+          <a-timeline-item label="2024-11-11" lineType="dashed">
             <a-row :style="{ display: 'inline-flex', alignItems: 'center' }">
               <IconFile
                 :size="32"
                 :style="{ marginRight: '16px', marginBottom: '12px' }"
               />
-              <div :style="{ marginBottom: '12px' }">系统设计报告完成</div>
+              <div :style="{ marginBottom: '12px' }">demo预览部署上线</div>
             </a-row>
           </a-timeline-item>
         </a-timeline>

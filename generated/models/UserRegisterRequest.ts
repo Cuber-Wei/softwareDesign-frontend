@@ -8,4 +8,5 @@ export type UserRegisterRequest = {
   userMail?: string;
   userPassword?: string;
   userPhone?: string;
+  verityCode?: string;
 };

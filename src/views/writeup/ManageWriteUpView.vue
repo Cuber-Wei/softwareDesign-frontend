@@ -1,5 +1,5 @@
 <template>
-  <div id="ManageQuestionView">
+  <div id="ManageWriteUpView">
     <h1>管理题解</h1>
     <a-table
       :columns="columns"
@@ -52,7 +52,7 @@
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, watchEffect } from "vue";
-import { Question, QuestionControllerService } from "../../../generated";
+import { WriteUp, WriteUpControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";
@@ -67,7 +67,7 @@ const searchParams = ref({
 });
 
 const loadData = async () => {
-  const res = await QuestionControllerService.listQuestionByPageUsingPost(
+  const res = await WriteUpControllerService.listWriteUpByPageUsingPost(
     searchParams.value
   );
   if (res.code === 0) {
@@ -89,7 +89,7 @@ watchEffect(() => {
 const columns = [
   {
     title: "ID",
-    dataIndex: "id",
+    dataIndex: "writeUpId",
   },
   {
     title: "标题",
@@ -121,17 +121,17 @@ const columns = [
   },
 ];
 const router = useRouter();
-const doUpdate = (question: Question) => {
+const doUpdate = (writeUp: WriteUp) => {
   router.push({
-    path: "/update/question",
+    path: "/update/writeUp",
     query: {
-      id: question.questionId,
+      id: writeUp.writeUpId,
     },
   });
 };
-const doDelete = async (question: Question) => {
-  const res = await QuestionControllerService.deleteQuestionUsingPost({
-    id: question.questionId,
+const doDelete = async (writeUp: WriteUp) => {
+  const res = await WriteUpControllerService.deleteWriteUpUsingPost({
+    id: writeUp.writeUpId,
   });
   if (res.code === 0) {
     // 更新页面
@@ -149,7 +149,7 @@ const onPageChange = (page: number) => {
 };
 </script>
 <style scoped>
-#ManageQuestionView {
+#ManageWriteUpView {
   margin: 0 auto;
   width: 90%;
   display: flex;

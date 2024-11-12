@@ -1,6 +1,9 @@
 <template>
   <div id="not-found">
-    <h1 style="margin-bottom: 2rem; text-align: center">404 Not Found</h1>
+    <h1 style="margin-bottom: 2rem; text-align: center">
+      404 Not Found
+      <span class="blink">_</span>
+    </h1>
     <a-row>
       <a-col :span="12">
         <a-card
@@ -57,5 +60,35 @@ const rightCode = codeJson.filter((item) => item.id % 2 !== 0);
   min-height: 250px;
   border-radius: 15px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+
+h1::before {
+  content: "/> ";
+}
+
+/* 定义keyframe动画，命名为blink */
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.blink {
+  animation: blink 2s linear infinite;
 }
 </style>

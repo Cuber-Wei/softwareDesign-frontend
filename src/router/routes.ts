@@ -21,6 +21,7 @@ import AddWriteUpView from "@/views/writeup/AddWriteUpView.vue";
 import ManageWriteUpView from "@/views/writeup/ManageWriteUpView.vue";
 import ReviewView from "@/views/user/ReviewView.vue";
 import ViewQuestionSubmitView from "@/views/question/ViewQuestionSubmitView.vue";
+import ReviewDetailView from "@/views/user/ReviewDetailView.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -154,7 +155,7 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/add/writeup",
+    path: "/add/writeup/:id",
     name: "发布题解",
     component: AddWriteUpView,
     meta: {
@@ -203,6 +204,37 @@ export const routes: Array<RouteRecordRaw> = [
     path: "/update/question",
     name: "更新题目",
     component: AddQuestionView,
+    meta: {
+      hideInMenu: true,
+      access: ACCESSENUM.ADMIN,
+    },
+  },
+
+  {
+    path: "/review/post/:id",
+    name: "审核帖子",
+    component: ReviewDetailView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+      access: ACCESSENUM.ADMIN,
+    },
+  },
+  {
+    path: "/review/writeup/:id",
+    name: "审核题解",
+    component: ReviewDetailView,
+    props: true,
+    meta: {
+      hideInMenu: true,
+      access: ACCESSENUM.ADMIN,
+    },
+  },
+  {
+    path: "/review/post/:id",
+    name: "审核帖子",
+    component: ReviewDetailView,
+    props: true,
     meta: {
       hideInMenu: true,
       access: ACCESSENUM.ADMIN,

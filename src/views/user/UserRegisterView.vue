@@ -61,18 +61,17 @@
           </template>
         </a-input-password>
       </a-form-item>
-      <a-form-item field="phone" label="手机号" tooltip="用于获取验证码">
-        <a-input v-model="form.phone" placeholder="请输入手机号">
+      <a-form-item field="userMail" label="邮箱" tooltip="用于获取验证码">
+        <a-input v-model="form.userMail" placeholder="example@mail.com">
           <template #prefix>
-            <IconPhone />
-            （+86）
+            <IconEmail />
           </template>
         </a-input>
       </a-form-item>
       <a-form-item
         field="verityCode"
         label="验证码"
-        tooltip="输入手机短信收到的验证码"
+        tooltip="输入邮箱收到的验证码"
       >
         <a-verification-code
           v-model="form.verityCode"
@@ -85,10 +84,15 @@
           >获取验证码
         </a-button>
       </a-form-item>
-      <a-form-item field="email" label="邮箱" tooltip="用于辅助登录和找回密码">
-        <a-input v-model="form.email" placeholder="example@mail.com">
+      <a-form-item
+        field="userPhone"
+        label="手机号"
+        tooltip="用于辅助登录和找回密码"
+      >
+        <a-input v-model="form.userPhone" placeholder="请输入手机号">
           <template #prefix>
-            <IconEmail />
+            <IconPhone />
+            （+86）
           </template>
         </a-input>
       </a-form-item>
@@ -98,7 +102,18 @@
         >
       </a-form-item>
       <a-form-item>
-        <a-button @click="handleSubmit">注册</a-button>
+        <a-button
+          type="primary"
+          style="width: 150px; margin: 0 auto"
+          @click="handleSubmit"
+          >注册
+        </a-button>
+        <a-button
+          type="primary"
+          style="width: 150px; margin: 0 auto"
+          @click="router.back()"
+          >返回
+        </a-button>
       </a-form-item>
     </a-form>
   </div>
@@ -131,8 +146,8 @@ const form = reactive({
   userAccount: "",
   userPassword: "",
   checkPassword: "",
-  email: "",
-  phone: "",
+  userMail: "",
+  userPhone: "",
   verityCode: "",
   isRead: false,
 } as UserLoginWithAccountRequest);
@@ -195,14 +210,14 @@ const rules = {
       },
     },
   ],
-  email: [
+  userMail: [
     {
-      type: "email",
-      required: false,
+      type: "userMail",
+      required: true,
       message: "请输入邮箱！",
     },
   ],
-  phone: [
+  userPhone: [
     {
       required: true,
       message: "请输入手机号！",

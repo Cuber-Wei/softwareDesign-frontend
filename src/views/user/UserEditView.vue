@@ -134,7 +134,7 @@
       style="margin-left: 1rem"
       type="primary"
       @click="cancel"
-      >取消
+      >返回
     </a-button>
   </div>
 </template>
@@ -186,12 +186,9 @@ const loadData = async () => {
     form.value.userAvatar = res.data?.userAvatar;
     form.value.userProfile = res.data?.userProfile;
     // 隐私处理
-    form.value.userPhone = res.data?.userPhone
-      ? doPrivacy(res.data.userPhone)
-      : "182****0746";
-    form.value.userMail = res.data?.userMail
-      ? doPrivacy(res.data.userMail)
-      : "cub*****@163.com";
+    form.value.userPhone = res.data?.userPhone;
+    form.value.userMail = res.data?.userMail;
+    console.log(res.data);
   } else {
     message.error("加载失败！ " + res.message);
   }

@@ -20,7 +20,15 @@
       <template #optional="{ record }">
         <a-space>
           <a-button type="primary" @click="doUpdate(record)">修改</a-button>
-          <a-button status="danger" @click="doDelete(record)">删除</a-button>
+          <a-button status="danger" @click="handleClick">删除</a-button>
+          <a-modal
+            v-model:visible="visible"
+            @ok="doDelete(record)"
+            @cancel="handleCancel"
+          >
+            <template #title> 警告</template>
+            <div>确认删除用户？</div>
+          </a-modal>
           <a-button status="danger" @click="resetPassword(record)"
             >重置密码
           </a-button>
@@ -44,7 +52,10 @@ import { User, UserControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment/moment";
+import { useStore } from "vuex";
 
+const store = useStore();
+const currUser = store.state?.user?.loginUser;
 const dataList = ref([]);
 const total = ref(0);
 const searchParams = ref({
@@ -117,6 +128,10 @@ const doUpdate = (user: User) => {
   });
 };
 const doDelete = async (user: User) => {
+  if (user.userId == currUser.userId) {
+    message.error("不能删除当前用户！");
+    return;
+  }
   const res = await UserControllerService.deleteUserUsingPost({
     id: user.userId,
   });
@@ -127,6 +142,14 @@ const doDelete = async (user: User) => {
   } else {
     message.error("删除用户失败！ " + res.message);
   }
+};
+const visible = ref(false);
+
+const handleClick = () => {
+  visible.value = true;
+};
+const handleCancel = () => {
+  visible.value = false;
 };
 const onPageChange = (page: number) => {
   searchParams.value = {

@@ -5,6 +5,6 @@
 export type PostUpdateRequest = {
   content?: string;
   postId?: number;
-  tags?: Array<string>;
+  tag?: Array<string>;
   title?: string;
 };

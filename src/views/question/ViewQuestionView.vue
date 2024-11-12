@@ -42,16 +42,11 @@
           <a-tab-pane key="answer" title="题解">
             <div class="docArea">
               <h2>题目题解</h2>
-              <MdEditor
-                :handle-change="onContentChange"
-                :value="writeup.content || ' '"
-                class="formItem"
-              />
               <a-button
                 style="margin-top: 16px"
                 type="primary"
-                @click="doCommentSubmit"
-                >提交
+                @click="toWriteWP"
+                >编写题解
               </a-button>
               <a-divider />
               <WriteUpCard />
@@ -164,7 +159,6 @@ import {
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
 import WriteUpCard from "@/components/WriteUpCard.vue";
-import MdEditor from "@/components/MdEditor.vue";
 import { useRouter } from "vue-router";
 import moment from "moment/moment";
 import { useStore } from "vuex";
@@ -256,6 +250,11 @@ const doSubmit = async () => {
       message.error("提交失败！ " + res.message);
     }
   }
+};
+const toWriteWP = () => {
+  router.push({
+    path: `/add/writeUp/${props.id}`,
+  });
 };
 //提交记录相关
 const dataList = ref([]);
