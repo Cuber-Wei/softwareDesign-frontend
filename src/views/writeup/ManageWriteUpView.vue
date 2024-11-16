@@ -1,5 +1,5 @@
 <template>
-  <div id="ManageWriteUpView">
+  <div class="ManageWriteUpView">
     <h1>管理题解</h1>
     <a-table
       :columns="columns"
@@ -56,8 +56,6 @@ import { WriteUp, WriteUpControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";
-
-const show = ref(true);
 
 const dataList = ref([]);
 const total = ref(0);
@@ -149,7 +147,7 @@ const onPageChange = (page: number) => {
 };
 </script>
 <style scoped>
-#ManageWriteUpView {
+.ManageWriteUpView {
   margin: 0 auto;
   width: 90%;
   display: flex;

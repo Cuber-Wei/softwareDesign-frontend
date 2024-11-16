@@ -52,7 +52,7 @@
               <WriteUpCard />
             </div>
           </a-tab-pane>
-          <a-tab-pane key="submits" title="提交记录">
+          <a-tab-pane key="submits" title="提交记录" @click="loadData">
             <div class="docArea">
               <h2>提交记录</h2>
               <a-descriptions
@@ -75,7 +75,7 @@
                 <a-input-number
                   v-model="searchParams.pageSize"
                   min="1"
-                  placeholder="每页题目数量"
+                  placeholder="每页提交记录数量"
                   size="small"
                   style="width: 200px"
                 />
@@ -100,7 +100,7 @@
                 <template #createTime="{ record }">
                   <a-space>
                     {{
-                      moment(record.createTime).format("YYYY-MM-DD-HH:MM:SS")
+                      moment(record.createTime).format("YYYY-MM-DD hh:mm:ss")
                     }}
                   </a-space>
                 </template>
@@ -200,7 +200,7 @@ const props = withDefaults(defineProps<Props>(), {
 const loadData = async () => {
   //拿到当前题目
   const questionRes = await QuestionControllerService.getQuestionVoByIdUsingGet(
-    props.id as string
+    props.id as any
   );
   if (questionRes.code === 0) {
     question.value = questionRes.data;
@@ -214,10 +214,9 @@ const loadData = async () => {
   }
   const questionSubmitRes =
     await QuestionSubmitControllerService.listQuestionSubmitByPageUsingPost(
-      searchParams.value
+      searchParams.value as any
     );
   if (questionSubmitRes.code === 0) {
-    console.log(questionSubmitRes.data);
     dataList.value = questionSubmitRes.data.records;
     // total.value = questionSubmitRes.data.total;
     total.value = questionSubmitRes.data.records.length;
@@ -241,7 +240,7 @@ const doSubmit = async () => {
     const res = await QuestionSubmitControllerService.doQuestionSubmitUsingPost(
       {
         ...form.value,
-        questionId: props.id,
+        questionId: props.id as any,
       }
     );
     if (res.code === 0) {
@@ -263,6 +262,7 @@ const searchParams = ref({
   questionId: props.id,
   pageSize: 10,
   current: 1,
+  userId: "", //只看自己？
 });
 
 // 监听分页变量，改变时更新页面
@@ -302,7 +302,7 @@ const checkboxChange = () => {
   if (isPersonal.value) {
     searchParams.value = {
       ...searchParams.value,
-      userId: currUser.userId,
+      userId: currUser.userId as any,
     };
   }
 };

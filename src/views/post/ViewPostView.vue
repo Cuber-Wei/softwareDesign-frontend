@@ -27,8 +27,16 @@
               </a-col>
               <a-col :span="16">
                 <div class="info">帖子作者：{{ post.user.userName }}</div>
-                <div class="info">提交时间：{{ post.createTime }}</div>
-                <div class="info">发布时间：{{ post.updateTime }}</div>
+                <div class="info">
+                  提交时间：{{
+                    moment(post.createTime).format("YYYY-MM-DD hh:mm")
+                  }}
+                </div>
+                <div class="info">
+                  发布时间：{{
+                    moment(post.updateTime).format("YYYY-MM-DD hh:mm")
+                  }}
+                </div>
                 <div class="info">评论数：{{ post.favourNum }}</div>
               </a-col>
             </a-row>
@@ -67,6 +75,7 @@ import {
 import MdViewer from "@/components/MdViewer.vue";
 import MdEditor from "@/components/MdEditor.vue";
 import CommentCard from "@/components/CommentCard.vue";
+import moment from "moment/moment";
 
 const post = ref<PostVO>();
 
@@ -80,11 +89,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 const loadData = async () => {
   const res = await PostControllerService.getPostVoByIdUsingGet(
-    props.id as string
+    props.id as any
   );
   if (res.code === 0) {
     post.value = res.data;
-    console.log(post.value);
   } else {
     message.error("加载失败！ " + res.message);
   }

@@ -28,7 +28,7 @@ export class WriteUpControllerService {
   ): CancelablePromise<BaseResponse_long_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/writeUp/add",
+      url: "/oj/api/writeUp/add",
       body: writeUpAddRequest,
       errors: {
         401: `Unauthorized`,
@@ -50,7 +50,7 @@ export class WriteUpControllerService {
   ): CancelablePromise<BaseResponse_boolean_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/writeUp/delete",
+      url: "/oj/api/writeUp/delete",
       body: deleteRequest,
       errors: {
         401: `Unauthorized`,
@@ -71,7 +71,7 @@ export class WriteUpControllerService {
   ): CancelablePromise<BaseResponse_WriteUpVO_> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/writeUp/get/vo",
+      url: "/oj/api/writeUp/get/vo",
       query: {
         id: id,
       },
@@ -95,7 +95,7 @@ export class WriteUpControllerService {
   ): CancelablePromise<BaseResponse_Page_WriteUp_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/writeUp/list/page",
+      url: "/oj/api/writeUp/list/page",
       body: writeUpQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -117,7 +117,7 @@ export class WriteUpControllerService {
   ): CancelablePromise<BaseResponse_Page_WriteUpVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/writeUp/list/page/vo",
+      url: "/oj/api/writeUp/list/page/vo",
       body: writeUpQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -139,7 +139,7 @@ export class WriteUpControllerService {
   ): CancelablePromise<BaseResponse_Page_WriteUpVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/writeUp/my/list/page/vo",
+      url: "/oj/api/writeUp/my/list/page/vo",
       body: writeUpQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -161,7 +161,7 @@ export class WriteUpControllerService {
   ): CancelablePromise<BaseResponse_Page_WriteUpVO_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/writeUp/search/page/vo",
+      url: "/oj/api/writeUp/search/page/vo",
       body: writeUpQueryRequest,
       errors: {
         401: `Unauthorized`,
@@ -183,7 +183,7 @@ export class WriteUpControllerService {
   ): CancelablePromise<BaseResponse_boolean_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/writeUp/update",
+      url: "/oj/api/writeUp/update",
       body: writeUpUpdateRequest,
       errors: {
         401: `Unauthorized`,

@@ -23,8 +23,8 @@
           <a-button status="danger" @click="handleClick">删除</a-button>
           <a-modal
             v-model:visible="visible"
-            @ok="doDelete(record)"
             @cancel="handleCancel"
+            @ok="doDelete(record)"
           >
             <template #title> 警告</template>
             <div>确认删除用户？</div>

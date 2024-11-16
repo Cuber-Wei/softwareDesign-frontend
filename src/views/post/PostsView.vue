@@ -60,7 +60,7 @@
       </template>
       <template #createTime="{ record }">
         <a-space>
-          {{ moment(record.createTime).format("YYYY-MM-DD-HH:MM:SS") }}
+          {{ moment(record.createTime).format("YYYY-MM-DD hh:mm:ss") }}
         </a-space>
       </template>
       <template #optional="{ record }">

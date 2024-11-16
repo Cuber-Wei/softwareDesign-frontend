@@ -1,18 +1,42 @@
 <template>
   <a-card class="card">
     <a-row style="align-items: center">
+      <!--      <a-col :span="8">-->
+      <!--        <a-avatar :size="100">-->
+      <!--          <img :src="props.post.user?.userAvatar" alt="头像" />-->
+      <!--        </a-avatar>-->
+      <!--      </a-col>-->
+      <!--      <a-col :span="16">-->
+      <!--        <div class="info">评论作者：{{ props.post.user?.userName }}</div>-->
+      <!--        <div class="info">评论时间：{{ props.post?.createTime }}</div>-->
+      <!--        <div class="info">发布时间：{{ props.post?.updateTime }}</div>-->
+      <!--        <div-->
+      <!--          class="info"-->
+      <!--          v-if="store.state.user?.loginUser?.userRole === 'admin'"-->
+      <!--        >-->
+      <!--          <a-button>删除</a-button>-->
+      <!--        </div>-->
+      <!--      </a-col>-->
+      <!--    </a-row>-->
+      <!--    <Viewer :plugins="plugins" :value="props.post?.content" />-->
       <a-col :span="8">
         <a-avatar :size="100">
-          <img :src="props.post.user?.userAvatar" alt="头像" />
+          <img alt="头像" src="@/assets/test-avatar.jpg" />
         </a-avatar>
       </a-col>
       <a-col :span="16">
-        <div class="info">评论作者：{{ props.post.user?.userName }}</div>
-        <div class="info">评论时间：{{ props.post?.createTime }}</div>
-        <div class="info">发布时间：{{ props.post?.updateTime }}</div>
+        <div class="info">评论作者：测试用户</div>
+        <div class="info">评论时间：2024-11-18 11:45:14</div>
+        <div class="info">评论时间：2024-11-18 11:45:14</div>
+        <div
+          v-if="store.state.user?.loginUser?.userRole === 'admin'"
+          class="info"
+        >
+          <a-button status="danger">删除</a-button>
+        </div>
       </a-col>
     </a-row>
-    <Viewer :plugins="plugins" :value="props.post?.content" />
+    <Viewer :plugins="plugins" value="# 测试评论" />
   </a-card>
 </template>
 <script lang="ts" setup>
@@ -22,6 +46,9 @@ import { PostVO } from "../../generated";
 import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight-ssr";
 import math from "@bytemd/plugin-math-ssr";
+import { useStore } from "vuex";
+
+const store = useStore();
 
 /**
  定义组件属性类型

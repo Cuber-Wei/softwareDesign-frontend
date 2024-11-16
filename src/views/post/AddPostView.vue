@@ -9,7 +9,7 @@
           placeholder="请输入标题"
         />
       </a-form-item>
-      <a-form-item field="content" label="内容">
+      <a-form-item field="content" label="帖子正文">
         <MdEditor
           :handle-change="onContentChange"
           :value="post.content"
@@ -24,11 +24,7 @@
           placeholder="请输入标签"
         />
       </a-form-item>
-      <a-button
-        html-type="submit"
-        style="width: 20%"
-        type="primary"
-        @click="doSubmit"
+      <a-button html-type="submit" style="width: 20%" type="primary"
         >提交
       </a-button>
     </a-form>
@@ -54,14 +50,14 @@ const loadData = async () => {
   if (!id) {
     return;
   }
-  const res = await PostControllerService.getPostVoByIdUsingGet(id as string);
+  const res: any = await PostControllerService.getPostVoByIdUsingGet(id as any);
   if (res.code === 0) {
     post.value = res.data;
     console.log(post.value);
     if (!post.value.tag) {
       post.value.tag = ["简单"];
     } else {
-      post.value.tag = JSON.parse(post.value.tag);
+      post.value.tag = JSON.parse(res.data.tag);
     }
   } else {
     message.error("加载失败！ " + res.message);
@@ -75,11 +71,7 @@ const onContentChange = (v: string) => {
   post.value.content = v;
 };
 
-const handleSubmit = () => {
-  // console.log(post);
-};
-
-const doSubmit = async () => {
+const handleSubmit = async () => {
   const res = await PostControllerService.addPostUsingPost(post.value);
   if (res.code === 0) {
     message.success("创建帖子成功！");

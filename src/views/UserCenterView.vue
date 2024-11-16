@@ -81,10 +81,10 @@ let currUser = ref<UserVO>({});
 const loadData = async () => {
   //拿到当前用户
   const res = await UserControllerService.getUserVoByIdUsingGet(
-    router.currentRoute.value.params.id as string
+    router.currentRoute.value.params.id as any
   );
   if (res.code === 0) {
-    currUser.value = res.data;
+    currUser.value = res.data as any;
   } else {
     message.error("加载失败！ " + res.message);
   }
@@ -134,7 +134,7 @@ const toReview = () => {
 
 .userProfile {
   color: #bbbbbb;
-  //background-color: #aaa;
+  /*background-color: #aaa;*/
   width: 50%;
 }
 

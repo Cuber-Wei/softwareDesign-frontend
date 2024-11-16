@@ -60,11 +60,21 @@
         </a-menu>
       </div>
     </a-col>
-    <a-col flex="100px">
-      <a-dropdown @select="handleSelect">
-        <a-button
-          >{{ store.state.user?.loginUser?.userName ?? "未登录" }}
-        </a-button>
+    <a-col flex="250px">
+      <a-link href="/user/register" style="margin-right: 32px">注册账号</a-link>
+      <a-dropdown :trigger="'hover'">
+        <a-avatar
+          :style="{
+            backgroundColor:
+              showName === '未登录'
+                ? '#c9cdd4'
+                : showName === 'admin'
+                ? '#00d0b6'
+                : '#14a9f8',
+          }"
+        >
+          {{ showName }}
+        </a-avatar>
         <template #content>
           <a-doption v-if="showName === '未登录'" @click="toLogin"
             >登录
@@ -98,21 +108,24 @@ const visibleRoutes = computed(() => {
     //是否在菜单中可见及剔除管理、发布菜单
     if (
       item.meta?.hideInMenu ||
-      item.name.slice(0, 2) === "管理" ||
-      item.name.slice(0, 2) === "发布"
+      item.name?.slice(0, 2) === "管理" ||
+      item.name?.slice(0, 2) === "发布"
     )
       return false;
     //鉴权
-    return checkAccess(store.state.user.loginUser, item?.meta?.access);
+    return checkAccess(
+      store.state.user.loginUser,
+      item?.meta?.access as string
+    );
   });
 });
 const manageMenu = computed(() => {
   return routes.filter((item) => {
     //是否以管理开头
     return (
-      item.name.startsWith("管理") &&
+      item.name?.startsWith("管理") &&
       !item.meta?.hideInMenu &&
-      checkAccess(store.state.user.loginUser, item?.meta?.access)
+      checkAccess(store.state.user.loginUser, item?.meta?.access as string)
     );
   });
 });
@@ -120,9 +133,9 @@ const createMenu = computed(() => {
   return routes.filter((item) => {
     //是否以发布开头
     return (
-      item.name.startsWith("发布") &&
+      item.name?.startsWith("发布") &&
       !item.meta?.hideInMenu &&
-      checkAccess(store.state.user.loginUser, item?.meta?.access)
+      checkAccess(store.state.user.loginUser, item?.meta?.access as string)
     );
   });
 });
@@ -135,7 +148,7 @@ router.afterEach((to) => {
   isSelectedManage.value = to.path.startsWith("/manage");
   isSelectedCreate.value = to.path.startsWith("/add");
 });
-const toPath = (toPath) => {
+const toPath = (toPath: string) => {
   router.push({ path: toPath });
 };
 
@@ -150,8 +163,7 @@ const userId = computed(() => {
   return store.state.user?.loginUser?.userId ?? -1;
 });
 const toLogin = () => {
-  const name = store.state.user?.loginUser?.userName;
-  if (name == "未登录") {
+  if (showName.value === "未登录") {
     router.push({ path: "/user/login", replace: true });
   }
 };

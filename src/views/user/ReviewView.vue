@@ -9,7 +9,7 @@
             主题帖&emsp;
           </a-badge>
         </template>
-        <a-tabs default-active-key="1" direction="vertical" class="left-tabs">
+        <a-tabs class="left-tabs" default-active-key="1" direction="vertical">
           <a-tab-pane key="1">
             <template #title>
               <a-badge :count="1" class="left-tab-pane">
@@ -136,7 +136,7 @@
             评论&emsp;
           </a-badge>
         </template>
-        <a-tabs default-active-key="1" direction="vertical" class="left-tabs">
+        <a-tabs class="left-tabs" default-active-key="1" direction="vertical">
           <a-tab-pane key="1">
             <template #title>
               <a-badge :count="1" class="left-tab-pane">
@@ -162,7 +162,7 @@
             题解&emsp;
           </a-badge>
         </template>
-        <a-tabs default-active-key="1" direction="vertical" class="left-tabs">
+        <a-tabs class="left-tabs" default-active-key="1" direction="vertical">
           <a-tab-pane key="1">
             <template #title>
               <a-badge :count="1" class="left-tab-pane">

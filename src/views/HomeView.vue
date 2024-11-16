@@ -90,7 +90,7 @@
 
 <script lang="ts" setup>
 import MdViewer from "@/components/MdViewer.vue";
-import content from "@/assets/index.md?"; // 使用 import 引入 md
+import content from "@/assets/index.md"; // 使用 import 引入 md
 import {
   IconCodeSquare,
   IconFile,

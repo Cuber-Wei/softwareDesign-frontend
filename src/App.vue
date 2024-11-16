@@ -48,7 +48,7 @@ import { useRoute } from "vue-router";
 const route = useRoute();
 //全局初始化函数,有全局单次调用的代码可以写在这里
 const doInit = () => {
-  console.log("Initializing");
+  // console.log("Initializing");
 };
 onMounted(() => {
   doInit();

@@ -67,8 +67,8 @@
                 >登录
               </a-button>
               <a-button
-                type="primary"
                 style="width: 150px; margin: 0 auto"
+                type="primary"
                 @click="router.push('/')"
                 >返回首页
               </a-button>
@@ -137,8 +137,8 @@
                 >登录
               </a-button>
               <a-button
-                type="primary"
                 style="width: 150px; margin: 0 auto"
+                type="primary"
                 @click="router.push('/')"
                 >返回首页
               </a-button>
@@ -162,10 +162,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import {
-  UserControllerService,
-  type UserLoginWithAccountRequest,
-} from "../../../generated";
+import { UserControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -180,7 +177,7 @@ const form = reactive({
   userMail: "",
   userPhone: "",
   verityCode: "",
-} as UserLoginWithAccountRequest);
+} as any);
 
 const trueCode = ref("654321");
 const formRef = ref(null);
@@ -189,7 +186,7 @@ const verityCodeProps = ref({
   error: false,
   answer: "aaaaaa",
 });
-const onFinish = (value) => {
+const onFinish = (value: any) => {
   if (value !== trueCode.value) {
     verityCodeProps.value.error = true;
     message.error("验证码错误！");
@@ -241,7 +238,7 @@ const rules = {
       message: "请确认密码！",
     },
     {
-      validator: (value, cb) => {
+      validator: (value: any, cb: any) => {
         if (value !== form.userPassword) {
           cb("two passwords do not match");
         } else {
@@ -263,7 +260,7 @@ const rules = {
       message: "请输入手机号！",
     },
     {
-      validator: (value, cb) => {
+      validator: (value: any, cb: any) => {
         if (/^1([3456789])\d{9}$/.test(value)) {
           return true;
         } else {

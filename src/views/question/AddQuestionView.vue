@@ -108,11 +108,7 @@
           </a-button>
         </a-space>
       </a-form-item>
-      <a-button
-        html-type="submit"
-        style="width: 20%"
-        type="primary"
-        @click="doSubmit"
+      <a-button html-type="submit" style="width: 20%" type="primary"
         >提交
       </a-button>
     </a-form>
@@ -154,15 +150,15 @@ const loadData = async () => {
   if (!id) {
     return;
   }
-  const res = await QuestionControllerService.getQuestionByIdUsingGet(
+  const res: any = await QuestionControllerService.getQuestionByIdUsingGet(
     id as any
   );
   if (res.code === 0) {
-    question.value = res.data;
+    question.value = res.data as any;
     if (!question.value.tag) {
       question.value.tag = ["简单"];
     } else {
-      question.value.tag = JSON.parse(question.value.tag);
+      question.value.tag = JSON.parse(res.data.tag);
     }
     if (!question.value.judgeConfig) {
       question.value.judgeConfig = {
@@ -171,7 +167,7 @@ const loadData = async () => {
         timeLimit: 1000,
       };
     } else {
-      question.value.judgeConfig = JSON.parse(question.value.judgeConfig);
+      question.value.judgeConfig = JSON.parse(res.data.judgeConfig);
     }
     if (!question.value.judgeCase) {
       question.value.judgeCase = [
@@ -181,7 +177,7 @@ const loadData = async () => {
         },
       ];
     } else {
-      question.value.judgeCase = JSON.parse(question.value.judgeCase);
+      question.value.judgeCase = JSON.parse(res.data.judgeCase);
     }
   } else {
     message.error("加载失败！ " + res.message);
@@ -199,27 +195,23 @@ const onAnswerChange = (v: string) => {
 };
 
 const handleAdd = () => {
-  if (question.value.judgeCase.length === 10) {
+  if (question.value.judgeCase?.length === 10) {
     message.error("测试用例不能多于十个！");
     return;
   }
-  question.value.judgeCase.push({
+  question.value.judgeCase?.push({
     input: "",
     output: "",
   });
 };
 const handleDelete = (index: number) => {
-  if (question.value.judgeCase.length === 1) {
+  if (question.value.judgeCase?.length === 1) {
     message.error("测试用例不能少于一个！");
     return;
   }
-  question.value.judgeCase.splice(index, 1);
+  question.value.judgeCase?.splice(index, 1);
 };
-const handleSubmit = () => {
-  // console.log(question);
-};
-
-const doSubmit = async () => {
+const handleSubmit = async () => {
   // 区分更新还是创建
   if (isUpdatePage.value) {
     const res = await QuestionControllerService.updateQuestionUsingPost(

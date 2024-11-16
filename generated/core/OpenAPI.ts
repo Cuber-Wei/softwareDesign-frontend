@@ -20,7 +20,7 @@ export type OpenAPIConfig = {
 };
 
 export const OpenAPI: OpenAPIConfig = {
-  BASE: "http://124.220.74.204", //http://124.220.74.204  http://localhost:8101 http://l0v3ch4n.top
+  BASE: "http://oj.l0v3ch4n.top/oj/api", //http://124.220.74.204  http://localhost:8101 http://l0v3ch4n.top
   VERSION: "1.0",
   WITH_CREDENTIALS: true,
   CREDENTIALS: "include",

@@ -94,7 +94,7 @@ const loadData = async () => {
   //拿到当前题目
   const res =
     await QuestionSubmitControllerService.getQuestionSubmitVoByIdUsingGet(
-      props.id as string
+      props.id as any
     );
   if (res.code === 0) {
     questionSubmit.value = res.data;

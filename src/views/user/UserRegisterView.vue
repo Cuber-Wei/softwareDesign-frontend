@@ -38,7 +38,7 @@
         <a-input-password
           v-model="form.userPassword"
           allow-clear
-          placeholder="请输入密码"
+          placeholder="请输入密码，长度应不小于8"
         >
           <template #prefix>
             <IconLock />
@@ -103,14 +103,14 @@
       </a-form-item>
       <a-form-item>
         <a-button
-          type="primary"
+          html-type="submit"
           style="width: 150px; margin: 0 auto"
-          @click="handleSubmit"
+          type="primary"
           >注册
         </a-button>
         <a-button
-          type="primary"
           style="width: 150px; margin: 0 auto"
+          type="primary"
           @click="router.back()"
           >返回
         </a-button>
@@ -122,10 +122,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import {
-  UserControllerService,
-  UserLoginWithAccountRequest,
-} from "../../../generated";
+import { UserControllerService } from "../../../generated";
 import message from "@arco-design/web-vue/es/message";
 import {
   IconEmail,
@@ -150,8 +147,8 @@ const form = reactive({
   userPhone: "",
   verityCode: "",
   isRead: false,
-} as UserLoginWithAccountRequest);
-const onFinish = (value) => {
+} as any);
+const onFinish = (value: any) => {
   if (value !== trueCode.value) {
     verityCodeProps.value.error = true;
     message.error("验证码错误！");
@@ -201,7 +198,7 @@ const rules = {
       message: "请确认密码！",
     },
     {
-      validator: (value, cb) => {
+      validator: (value: any, cb: any) => {
         if (value !== form.userPassword) {
           cb("two passwords do not match");
         } else {
@@ -212,7 +209,7 @@ const rules = {
   ],
   userMail: [
     {
-      type: "userMail",
+      type: "email",
       required: true,
       message: "请输入邮箱！",
     },
@@ -223,7 +220,7 @@ const rules = {
       message: "请输入手机号！",
     },
     {
-      validator: (value, cb) => {
+      validator: (value: any, cb: any) => {
         if (/^1([3456789])\d{9}$/.test(value)) {
           return true;
         } else {

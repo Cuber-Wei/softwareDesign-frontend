@@ -46,8 +46,8 @@
       >
         <a-input-password
           v-model="form.userPassword"
-          placeholder="请输入密码"
           disabled="disabled"
+          placeholder="请输入密码"
         />
       </a-form-item>
       <a-form-item
@@ -57,8 +57,8 @@
       >
         <a-input-password
           v-model="form.userPassword"
-          placeholder="请确认密码"
           disabled="disabled"
+          placeholder="请确认密码"
         />
       </a-form-item>
       <a-form-item>
@@ -99,8 +99,6 @@ const form = reactive({
   userPhone: "",
   verityCode: "",
 } as UserLoginWithAccountRequest);
-const trueCode = ref("654321");
-const formRef = ref(null);
 const verityCodeProps = ref({
   disabled: false,
   error: false,
@@ -149,7 +147,7 @@ const rules = {
       message: "请确认密码！",
     },
     {
-      validator: (value, cb) => {
+      validator: (value: any, cb: any) => {
         if (value !== form.userPassword) {
           cb("two passwords do not match");
         } else {
@@ -171,7 +169,7 @@ const rules = {
       message: "请输入手机号！",
     },
     {
-      validator: (value, cb) => {
+      validator: (value: any, cb: any) => {
         if (/^1([3456789])\d{9}$/.test(value)) {
           return true;
         } else {

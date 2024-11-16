@@ -177,17 +177,15 @@ const doPrivacy = (str: string) => {
 const loadData = async () => {
   const route = useRoute();
   const userId = route.params.id;
-  const res = await UserControllerService.getUserVoByIdUsingGet(
-    userId as string
-  );
+  const res = await UserControllerService.getUserVoByIdUsingGet(userId as any);
   if (res.code === 0) {
-    form.value.userId = res.data?.userId;
-    form.value.userName = res.data?.userName;
-    form.value.userAvatar = res.data?.userAvatar;
-    form.value.userProfile = res.data?.userProfile;
+    form.value.userId = res.data?.userId as any;
+    form.value.userName = res.data?.userName as string;
+    form.value.userAvatar = res.data?.userAvatar as string;
+    form.value.userProfile = res.data?.userProfile as string;
     // 隐私处理
-    form.value.userPhone = res.data?.userPhone;
-    form.value.userMail = res.data?.userMail;
+    form.value.userPhone = res.data?.userPhone as string;
+    form.value.userMail = res.data?.userMail as string;
     console.log(res.data);
   } else {
     message.error("加载失败！ " + res.message);
@@ -199,23 +197,23 @@ onMounted(() => {
 
 const file = ref();
 
-const onChange = (_, currentFile) => {
+const onChange = (_: any, currentFile: any) => {
   file.value = {
     ...currentFile,
     // url: URL.createObjectURL(currentFile.file),
   };
 };
-const onProgress = (currentFile) => {
+const onProgress = (currentFile: any) => {
   file.value = currentFile;
 };
 const handleSubmit = (data: UserVO) => {
   console.log(data);
 };
 const submit = async () => {
-  let res = {};
+  let res: any;
   if (currUser.value.loginUser.userRole === "admin") {
     res = await UserControllerService.updateUserUsingPost({
-      ...form.value,
+      ...(form.value as any),
     });
   } else {
     res = await UserControllerService.updateMyUserUsingPost({

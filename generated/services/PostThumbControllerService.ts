@@ -21,7 +21,7 @@ export class PostThumbControllerService {
   ): CancelablePromise<BaseResponse_int_ | any> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/post_thumb/",
+      url: "/oj/api/post_thumb/",
       body: postThumbAddRequest,
       errors: {
         401: `Unauthorized`,
