@@ -70,7 +70,7 @@
 </template>
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
-import { UserControllerService, UserVO } from "../../generated";
+import { UserControllerService, UserVO } from "../generated";
 import { onMounted, ref } from "vue";
 import message from "@arco-design/web-vue/es/message";
 

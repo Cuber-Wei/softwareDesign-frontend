@@ -67,11 +67,7 @@
 <script lang="ts" setup>
 import { defineProps, onMounted, ref, withDefaults } from "vue";
 import message from "@arco-design/web-vue/es/message";
-import {
-  PostAddRequest,
-  PostControllerService,
-  PostVO,
-} from "../../../generated";
+import { PostAddRequest, PostControllerService, PostVO } from "../../generated";
 import MdViewer from "@/components/MdViewer.vue";
 import MdEditor from "@/components/MdEditor.vue";
 import CommentCard from "@/components/CommentCard.vue";

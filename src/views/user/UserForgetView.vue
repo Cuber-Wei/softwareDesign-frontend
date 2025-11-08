@@ -83,7 +83,7 @@ import { reactive, ref } from "vue";
 import {
   UserControllerService,
   type UserLoginWithAccountRequest,
-} from "../../../generated";
+} from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";

@@ -46,7 +46,7 @@ import {
   QuestionControllerService,
   WriteUpAddRequest,
   WriteUpControllerService,
-} from "../../../generated";
+} from "../../generated";
 import { useRoute } from "vue-router";
 
 const writeup = ref({

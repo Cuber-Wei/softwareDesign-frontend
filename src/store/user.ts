@@ -1,7 +1,7 @@
 // initial state
 import { StoreOptions } from "vuex";
 import ACCESSENUM from "@/access/accessEnum";
-import { UserControllerService } from "../../generated";
+import { UserControllerService } from "../generated";
 // getters
 const getters = {};
 

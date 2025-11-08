@@ -79,6 +79,7 @@
                   size="small"
                   style="width: 200px"
                 />
+                <a-button type="primary" @click="loadData">刷新</a-button>
               </a-space>
               <a-divider :size="0"></a-divider>
               <a-table
@@ -155,7 +156,7 @@ import {
   QuestionSubmitAddRequest,
   QuestionSubmitControllerService,
   QuestionSubmitVO,
-} from "../../../generated";
+} from "../../generated";
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
 import WriteUpCard from "@/components/WriteUpCard.vue";

@@ -57,8 +57,8 @@
         <a-space>
           {{
             `${
-              record.submitNum ? record.acceptedNum / record.submitNum : "0"
-            }%  (${record.acceptedNum} / ${record.submitNum})`
+              record.submitNum ?? 0 ? record.acceptedNum / record.submitNum : 0
+            }%  (${record.acceptedNum ?? 0} / ${record.submitNum ?? 0})`
           }}
         </a-space>
       </template>
@@ -75,7 +75,7 @@
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, watchEffect } from "vue";
-import { Question, QuestionControllerService } from "../../../generated";
+import { Question, QuestionControllerService } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";

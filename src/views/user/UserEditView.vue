@@ -140,7 +140,7 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import { UserControllerService, UserVO } from "../../../generated";
+import { UserControllerService, UserVO } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";

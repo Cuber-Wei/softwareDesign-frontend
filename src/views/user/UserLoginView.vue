@@ -162,7 +162,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import { UserControllerService } from "../../../generated";
+import { UserControllerService } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";

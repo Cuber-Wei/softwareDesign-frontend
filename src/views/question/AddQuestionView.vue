@@ -118,10 +118,7 @@
 import { onMounted, ref } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
 import message from "@arco-design/web-vue/es/message";
-import {
-  QuestionAddRequest,
-  QuestionControllerService,
-} from "../../../generated";
+import { QuestionAddRequest, QuestionControllerService } from "../../generated";
 import { useRoute } from "vue-router";
 
 const question = ref({

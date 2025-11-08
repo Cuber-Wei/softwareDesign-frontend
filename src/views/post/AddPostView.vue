@@ -34,7 +34,7 @@
 import { onMounted, ref } from "vue";
 import MdEditor from "@/components/MdEditor.vue";
 import message from "@arco-design/web-vue/es/message";
-import { PostAddRequest, PostControllerService } from "../../../generated";
+import { PostAddRequest, PostControllerService } from "../../generated";
 import { useRoute } from "vue-router";
 
 const post = ref({

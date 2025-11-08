@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { Viewer } from "@bytemd/vue-next";
 import { defineProps, withDefaults } from "vue";
-import { PostVO } from "../../generated";
+import { PostVO } from "../generated";
 import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight-ssr";
 import math from "@bytemd/plugin-math-ssr";

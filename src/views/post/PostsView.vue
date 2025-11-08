@@ -73,7 +73,7 @@
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, watchEffect } from "vue";
-import { Post, PostControllerService } from "../../../generated";
+import { Post, PostControllerService } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import moment from "moment";

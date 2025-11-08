@@ -33,7 +33,7 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import message from "@arco-design/web-vue/es/message";
-import { PostControllerService, PostVO } from "../../../generated";
+import { PostControllerService, PostVO } from "../../generated";
 import { useRoute } from "vue-router";
 import MdViewer from "@/components/MdViewer.vue";
 

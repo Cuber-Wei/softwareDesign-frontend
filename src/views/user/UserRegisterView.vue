@@ -122,7 +122,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { UserControllerService } from "../../../generated";
+import { UserControllerService } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import {
   IconEmail,

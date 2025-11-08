@@ -67,7 +67,7 @@ import { defineProps, onMounted, ref, withDefaults } from "vue";
 import {
   QuestionSubmitControllerService,
   QuestionSubmitVO,
-} from "../../../generated";
+} from "../../generated";
 import MdViewer from "@/components/MdViewer.vue";
 import message from "@arco-design/web-vue/es/message";
 import moment from "moment";
