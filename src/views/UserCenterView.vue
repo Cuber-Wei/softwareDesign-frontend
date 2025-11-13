@@ -49,7 +49,7 @@
               <a-button class="userButton" @click="toEditDetail(currUser)"
                 >修改资料
               </a-button>
-              <a-badge :count="9">
+              <a-badge :count="9" v-if="currUser?.userRole === 'admin'">
                 <a-button class="userButton" @click="toReview"
                   >审核事项
                 </a-button>

@@ -3,13 +3,14 @@
 /* tslint:disable */
 /* eslint-disable */
 export type Post = {
-  content?: string;
-  createTime?: string;
-  isDelete?: number;
-  postId?: number;
-  reviewStatus?: number;
-  tag?: string;
-  title?: string;
-  updateTime?: string;
-  userId?: number;
+    content?: string;
+    createTime?: string;
+    isDelete?: number;
+    postId?: number;
+    reviewStatus?: number;
+    tag?: string;
+    title?: string;
+    updateTime?: string;
+    userId?: number;
 };
+

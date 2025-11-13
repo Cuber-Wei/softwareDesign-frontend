@@ -3,8 +3,9 @@
 /* tslint:disable */
 /* eslint-disable */
 export type WriteUpUpdateRequest = {
-  content?: string;
-  tags?: Array<string>;
-  title?: string;
-  writeUpId?: number;
+    content?: string;
+    tags?: Array<string>;
+    title?: string;
+    writeUpId?: number;
 };
+

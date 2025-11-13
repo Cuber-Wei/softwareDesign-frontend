@@ -2,10 +2,10 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type {Page_WriteUp_} from "./Page_WriteUp_";
-
+import type { Page_WriteUp_ } from './Page_WriteUp_';
 export type BaseResponse_Page_WriteUp_ = {
-  code?: number;
-  data?: Page_WriteUp_;
-  message?: string;
+    code?: number;
+    data?: Page_WriteUp_;
+    message?: string;
 };
+

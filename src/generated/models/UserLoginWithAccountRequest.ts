@@ -3,6 +3,7 @@
 /* tslint:disable */
 /* eslint-disable */
 export type UserLoginWithAccountRequest = {
-  userAccount?: string;
-  userPassword?: string;
+    userAccount?: string;
+    userPassword?: string;
 };
+

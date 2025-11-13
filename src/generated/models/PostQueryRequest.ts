@@ -3,17 +3,18 @@
 /* tslint:disable */
 /* eslint-disable */
 export type PostQueryRequest = {
-  content?: string;
-  current?: number;
-  notPostId?: number;
-  orTag?: Array<string>;
-  pageSize?: number;
-  postId?: number;
-  reviewStatus?: number;
-  searchText?: string;
-  sortField?: string;
-  sortOrder?: string;
-  tag?: Array<string>;
-  title?: string;
-  userId?: number;
+    content?: string;
+    current?: number;
+    notPostId?: number;
+    orTag?: Array<string>;
+    pageSize?: number;
+    postId?: number;
+    reviewStatus?: number;
+    searchText?: string;
+    sortField?: string;
+    sortOrder?: string;
+    tag?: Array<string>;
+    title?: string;
+    userId?: number;
 };
+

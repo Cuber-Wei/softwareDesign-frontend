@@ -3,14 +3,15 @@
 /* tslint:disable */
 /* eslint-disable */
 export type WriteUp = {
-  content?: string;
-  createTime?: string;
-  isDelete?: number;
-  questionId?: number;
-  reviewStatus?: number;
-  tag?: string;
-  title?: string;
-  updateTime?: string;
-  userId?: number;
-  writeUpId?: number;
+    content?: string;
+    createTime?: string;
+    isDelete?: number;
+    questionId?: number;
+    reviewStatus?: number;
+    tag?: string;
+    title?: string;
+    updateTime?: string;
+    userId?: number;
+    writeUpId?: number;
 };
+

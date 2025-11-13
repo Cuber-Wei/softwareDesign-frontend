@@ -122,7 +122,7 @@
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { UserControllerService } from "../../generated";
+import { SmsControllerService, UserControllerService } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import {
   IconEmail,
@@ -148,6 +148,17 @@ const form = reactive({
   verityCode: "",
   isRead: false,
 } as any);
+const getCode = async () => {
+  if (!form.userMail || form.userMail === "") {
+    message.error("请输入邮箱！");
+  }
+  const res = await SmsControllerService.sendMailRegisterUsingPost(form);
+  if (res.code === 0) {
+    // 获取到验证码
+    trueCode.value = res.data;
+    console.log(trueCode.value);
+  }
+};
 const onFinish = (value: any) => {
   if (value !== trueCode.value) {
     verityCodeProps.value.error = true;
