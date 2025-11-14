@@ -2,7 +2,9 @@
   <div class="user-login">
     <h2 style="margin-bottom: 32px">找回密码</h2>
     <a-form
+      ref="formRef"
       :label-align="'right'"
+      :layout="horizontal"
       :model="form"
       :rules="rules"
       auto-label-width
@@ -12,14 +14,6 @@
       <a-form-item field="userAccount" label="用户名" tooltip="请输入用户名">
         <a-input v-model="form.userAccount" placeholder="请输入用户名" />
       </a-form-item>
-      <!--      <a-form-item field="userPhone" label="手机号" tooltip="邮箱与手机号至少必填一个">-->
-      <!--        <a-input v-model="form.userPhone" placeholder="请输入手机号">-->
-      <!--          <template #prefix>-->
-      <!--            <IconPhone />-->
-      <!--            （+86）-->
-      <!--          </template>-->
-      <!--        </a-input>-->
-      <!--      </a-form-item>-->
       <a-form-item field="userMail" label="邮箱" tooltip="用于获取验证码">
         <a-input v-model="form.userMail" placeholder="example@mail.com">
           <template #prefix>
@@ -41,23 +35,23 @@
       </a-form-item>
       <a-form-item
         field="userPassword"
-        label="密码"
+        label="新密码"
         tooltip="验证身份后解锁；密码不少于八位"
       >
         <a-input-password
           v-model="form.userPassword"
-          disabled="disabled"
+          :disabled="!verityCodeProps.disabled"
           placeholder="请输入密码"
         />
       </a-form-item>
       <a-form-item
         field="checkPassword"
-        label="二次输入"
+        label="确认密码"
         tooltip="再次输入密码以确认"
       >
         <a-input-password
-          v-model="form.userPassword"
-          disabled="disabled"
+          v-model="form.checkPassword"
+          :disabled="!verityCodeProps.disabled"
           placeholder="请确认密码"
         />
       </a-form-item>
@@ -80,10 +74,7 @@
 </template>
 <script lang="ts" setup>
 import { reactive, ref } from "vue";
-import {
-  UserControllerService,
-  type UserLoginWithAccountRequest,
-} from "../../generated";
+import { SmsControllerService, UserControllerService } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -96,18 +87,38 @@ const form = reactive({
   userPassword: "",
   checkPassword: "",
   userMail: "",
-  userPhone: "",
   verityCode: "",
-} as UserLoginWithAccountRequest);
+} as any);
+const trueCode = ref("654321");
+const formRef = ref(null);
 const verityCodeProps = ref({
   disabled: false,
   error: false,
   answer: "aaaaaa",
 });
-
+const getCode = async () => {
+  if (!form.userMail || form.userMail === "") {
+    message.error("请输入邮箱！");
+  }
+  const res = await SmsControllerService.sendMailForgetUsingPost(form);
+  if (res.code === 0) {
+    // 获取到验证码
+    trueCode.value = res.data;
+  }
+};
+const onFinish = (value: any) => {
+  if (value !== trueCode.value) {
+    verityCodeProps.value.error = true;
+    message.error("验证码错误！");
+    form.verityCode = "";
+  } else {
+    verityCodeProps.value.error = false;
+    verityCodeProps.value.disabled = true;
+  }
+};
 const handleSubmit = async () => {
   const redirectUrl = window.location.search;
-  const res = await UserControllerService.userLoginUsingPost(form);
+  const res = await UserControllerService.resetPassWordUsingPost(form);
   if (res.code === 0) {
     await store.dispatch("user/getLoginUser");
     // 登录成功跳转页面
@@ -158,25 +169,9 @@ const rules = {
   ],
   userMail: [
     {
-      type: "userMail",
+      type: "email",
       required: true,
       message: "请输入邮箱！",
-    },
-  ],
-  userPhone: [
-    {
-      required: false,
-      message: "请输入手机号！",
-    },
-    {
-      validator: (value: any, cb: any) => {
-        if (/^1([3456789])\d{9}$/.test(value)) {
-          return true;
-        } else {
-          cb("手机格式不正确");
-          return false;
-        }
-      },
     },
   ],
   verityCode: [

@@ -11,7 +11,9 @@ import type { BaseResponse_User_ } from '../models/BaseResponse_User_';
 import type { BaseResponse_UserVO_ } from '../models/BaseResponse_UserVO_';
 import type { DeleteRequest } from '../models/DeleteRequest';
 import type { UserAddRequest } from '../models/UserAddRequest';
+import type { UserForgetPasswordRequest } from '../models/UserForgetPasswordRequest';
 import type { UserLoginWithAccountRequest } from '../models/UserLoginWithAccountRequest';
+import type { UserLoginWithVerityRequest } from '../models/UserLoginWithVerityRequest';
 import type { UserQueryRequest } from '../models/UserQueryRequest';
 import type { UserRegisterRequest } from '../models/UserRegisterRequest';
 import type { UserUpdateMyRequest } from '../models/UserUpdateMyRequest';
@@ -55,6 +57,27 @@ export class UserControllerService {
             method: 'POST',
             url: '/oj/api/user/delete',
             body: deleteRequest,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
+     * resetPassWord
+     * @param userForgetPasswordRequest userForgetPasswordRequest
+     * @returns BaseResponse_boolean_ OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static resetPassWordUsingPost(
+        userForgetPasswordRequest: UserForgetPasswordRequest,
+    ): CancelablePromise<BaseResponse_boolean_ | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/oj/api/user/forget/password',
+            body: userForgetPasswordRequest,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,
@@ -178,6 +201,27 @@ export class UserControllerService {
             method: 'POST',
             url: '/oj/api/user/login',
             body: userLoginWithAccountRequest,
+            errors: {
+                401: `Unauthorized`,
+                403: `Forbidden`,
+                404: `Not Found`,
+            },
+        });
+    }
+    /**
+     * userLoginWithVerity
+     * @param userLoginWithVerityRequest userLoginWithVerityRequest
+     * @returns BaseResponse_LoginUserVO_ OK
+     * @returns any Created
+     * @throws ApiError
+     */
+    public static userLoginWithVerityUsingPost(
+        userLoginWithVerityRequest: UserLoginWithVerityRequest,
+    ): CancelablePromise<BaseResponse_LoginUserVO_ | any> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/oj/api/user/login/verity',
+            body: userLoginWithVerityRequest,
             errors: {
                 401: `Unauthorized`,
                 403: `Forbidden`,

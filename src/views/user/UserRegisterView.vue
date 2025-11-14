@@ -156,7 +156,6 @@ const getCode = async () => {
   if (res.code === 0) {
     // 获取到验证码
     trueCode.value = res.data;
-    console.log(trueCode.value);
   }
 };
 const onFinish = (value: any) => {
