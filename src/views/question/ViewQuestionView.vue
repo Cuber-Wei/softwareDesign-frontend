@@ -49,10 +49,14 @@
                 >编写题解
               </a-button>
               <a-divider />
-              <WriteUpCard />
+              <WriteUpCard
+                :post="item"
+                v-for="(item, index) in writeUpList"
+                :key="index"
+              />
             </div>
           </a-tab-pane>
-          <a-tab-pane key="submits" title="提交记录" @click="loadData">
+          <a-tab-pane key="submits" title="提交记录">
             <div class="docArea">
               <h2>提交记录</h2>
               <a-descriptions
@@ -156,6 +160,8 @@ import {
   QuestionSubmitAddRequest,
   QuestionSubmitControllerService,
   QuestionSubmitVO,
+  WriteUpControllerService,
+  WriteUpVO,
 } from "../../generated";
 import CodeEditor from "@/components/CodeEditor.vue";
 import MdViewer from "@/components/MdViewer.vue";
@@ -167,26 +173,12 @@ import { useStore } from "vuex";
 const store = useStore();
 const currUser = store.state.user.loginUser;
 const question = ref<QuestionAddRequest>();
-const writeup = ref({
-  content: "# 贡献题解...",
-} as PostAddRequest);
+const writeUpList = ref<Array<WriteUpVO>>();
 const isPersonal = ref(false); //只看自己？
 const languageOptions = [
   {
     value: "java",
     label: "Java",
-  },
-  {
-    value: "cpp",
-    label: "C++",
-  },
-  {
-    value: "python",
-    label: "Python3",
-  },
-  {
-    value: "golang",
-    label: "Golang",
   },
 ];
 
@@ -205,10 +197,28 @@ const loadData = async () => {
   );
   if (questionRes.code === 0) {
     question.value = questionRes.data;
-    // writeup.value.questionId = question.value.questionId;
   } else {
     message.error("加载失败！ " + questionRes.message);
   }
+
+  //拿到当前题目通过审核的题解
+  // 校验分页数量
+  if (
+    !writeUpSearchParams.value.pageSize ||
+    writeUpSearchParams.value.pageSize <= 0
+  ) {
+    writeUpSearchParams.value.pageSize = 5;
+  }
+  const writeUpRes =
+    await WriteUpControllerService.listWriteUpVoByPageUsingPost(
+      writeUpSearchParams.value as any
+    );
+  if (writeUpRes.code === 0) {
+    writeUpList.value = writeUpRes.data.records;
+  } else {
+    message.error("加载失败！ " + writeUpRes.message);
+  }
+
   // 校验分页数量
   if (!searchParams.value.pageSize || searchParams.value.pageSize <= 0) {
     searchParams.value.pageSize = 5;
@@ -219,7 +229,6 @@ const loadData = async () => {
     );
   if (questionSubmitRes.code === 0) {
     dataList.value = questionSubmitRes.data.records;
-    // total.value = questionSubmitRes.data.total;
     total.value = questionSubmitRes.data.records.length;
   } else {
     message.error("加载数据失败！ " + questionSubmitRes.message);
@@ -251,6 +260,13 @@ const doSubmit = async () => {
     }
   }
 };
+//题解相关
+const writeUpSearchParams = ref({
+  questionId: props.id,
+  pageSize: 10,
+  current: 1,
+  reviewStatus: 1, //已审核通过
+});
 const toWriteWP = () => {
   router.push({
     path: `/add/writeUp/${props.id}`,

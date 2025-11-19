@@ -59,7 +59,11 @@
           >提交
         </a-button>
         <a-divider />
-        <CommentCard :post="post" />
+        <CommentCard
+          :post="comment"
+          v-for="(comment, index) in commentList"
+          :key="index"
+        />
       </a-col>
     </a-row>
   </div>
@@ -67,7 +71,13 @@
 <script lang="ts" setup>
 import { defineProps, onMounted, ref, withDefaults } from "vue";
 import message from "@arco-design/web-vue/es/message";
-import { PostAddRequest, PostControllerService, PostVO } from "../../generated";
+import {
+  PostComment,
+  PostCommentAddRequest,
+  PostCommentControllerService,
+  PostControllerService,
+  PostVO,
+} from "../../generated";
 import MdViewer from "@/components/MdViewer.vue";
 import MdEditor from "@/components/MdEditor.vue";
 import CommentCard from "@/components/CommentCard.vue";
@@ -92,6 +102,24 @@ const loadData = async () => {
   } else {
     message.error("加载失败！ " + res.message);
   }
+
+  //拿到当前帖子通过审核的题解
+  // 校验分页数量
+  if (
+    !commentSearchParamsw.value.pageSize ||
+    commentSearchParamsw.value.pageSize <= 0
+  ) {
+    commentSearchParamsw.value.pageSize = 5;
+  }
+  const commentRes =
+    await PostCommentControllerService.listPostCommentVoByPageUsingPost(
+      commentSearchParamsw.value as any
+    );
+  if (commentRes.code === 0) {
+    commentList.value = commentRes.data.records;
+  } else {
+    message.error("加载失败！ " + commentRes.message);
+  }
 };
 onMounted(() => {
   loadData();
@@ -99,10 +127,32 @@ onMounted(() => {
 
 const comment = ref({
   content: "# 说点什么...",
-} as PostAddRequest);
+} as PostCommentAddRequest);
+
+const commentSearchParamsw = ref({
+  postId: props.id,
+  pageSize: 10,
+  current: 1,
+  reviewStatus: 1, //已审核通过
+});
+const commentList = ref<Array<PostComment>>();
 
 const onContentChange = (v: string) => {
   comment.value.content = v;
+};
+
+const doCommentSubmit = async () => {
+  if (props.id !== "" && comment.value.content !== "") {
+    const res = await PostCommentControllerService.addPostCommentUsingPost({
+      ...comment.value,
+      postId: props.id as any,
+    });
+    if (res.code === 0) {
+      message.success("提交成功！");
+    } else {
+      message.error("提交失败！ " + res.message);
+    }
+  }
 };
 </script>
 <style>

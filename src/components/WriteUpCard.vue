@@ -18,7 +18,7 @@
 <script lang="ts" setup>
 import { Viewer } from "@bytemd/vue-next";
 import { defineProps, withDefaults } from "vue";
-import { PostVO } from "../generated";
+import { WriteUpVO } from "../generated";
 import gfm from "@bytemd/plugin-gfm";
 import highlight from "@bytemd/plugin-highlight-ssr";
 import math from "@bytemd/plugin-math-ssr";
@@ -27,14 +27,14 @@ import math from "@bytemd/plugin-math-ssr";
  定义组件属性类型
  */
 interface Props {
-  post: PostVO;
+  post: WriteUpVO;
 }
 
 /**
  给组件指定初始值
  */
 const props = withDefaults(defineProps<Props>(), {
-  post: () => ({} as PostVO),
+  post: () => ({} as WriteUpVO),
 });
 const plugins = [
   gfm(),

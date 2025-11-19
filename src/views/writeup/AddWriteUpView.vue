@@ -50,13 +50,14 @@ import {
 import { useRoute } from "vue-router";
 
 const writeup = ref({
+  questionId: 0,
   content: "# 题解描述\n",
   tag: ["简单"],
   title: "A + B",
 } as WriteUpAddRequest);
 
 const question = ref({
-  questionId: "",
+  questionId: 0,
   title: "A + B",
 } as any);
 
@@ -72,6 +73,7 @@ const loadData = async () => {
   );
   if (res.code === 0) {
     question.value = res.data;
+    writeup.value.questionId = res.data.questionId;
   } else {
     message.error("加载失败！ " + res.message);
   }
@@ -85,9 +87,7 @@ const onContentChange = (v: string) => {
 };
 
 const handleSubmit = async () => {
-  const res = await WriteUpControllerService.addWriteUpUsingPost(
-    writeup.value as any
-  );
+  const res = await WriteUpControllerService.addWriteUpUsingPost(writeup.value);
   if (res.code === 0) {
     message.success("创建题解成功！");
   } else {

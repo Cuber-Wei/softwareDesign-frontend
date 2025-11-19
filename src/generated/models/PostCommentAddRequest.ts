@@ -2,10 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type QuestionSubmitAddRequest = {
-    code?: string;
-    language?: string;
-    questionId?: number;
+export type PostCommentAddRequest = {
+    content?: string;
+    postId?: number;
     userId?: number;
 };
 

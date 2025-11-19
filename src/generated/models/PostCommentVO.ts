@@ -2,17 +2,16 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export type PostCommentQueryRequest = {
+import type { UserVO } from './UserVO';
+export type PostCommentVO = {
     content?: string;
-    current?: number;
-    notPostCommentId?: number;
-    pageSize?: number;
+    createTime?: string;
+    id?: number;
     postCommentId?: number;
     postId?: number;
     reviewStatus?: number;
-    searchText?: string;
-    sortField?: string;
-    sortOrder?: string;
+    updateTime?: string;
+    user?: UserVO;
     userId?: number;
 };
 

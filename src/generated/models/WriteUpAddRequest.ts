@@ -4,6 +4,7 @@
 /* eslint-disable */
 export type WriteUpAddRequest = {
     content?: string;
+    questionId?: number;
     tag?: Array<string>;
     title?: string;
 };

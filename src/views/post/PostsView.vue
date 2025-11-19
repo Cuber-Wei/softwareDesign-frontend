@@ -83,6 +83,7 @@ const total = ref(0);
 const searchParams = ref({
   pageSize: 10,
   current: 1,
+  reviewStatus: 1,
   title: "",
   tag: [],
 });
@@ -98,7 +99,6 @@ const loadData = async () => {
   if (res.code === 0) {
     dataList.value = res.data.records;
     total.value = res.data.total;
-    console.log(dataList);
   } else {
     message.error("加载数据失败！ " + res.message);
   }
