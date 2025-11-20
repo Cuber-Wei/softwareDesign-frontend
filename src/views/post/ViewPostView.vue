@@ -22,11 +22,18 @@
             <a-row style="align-items: center">
               <a-col :span="8">
                 <a-avatar :size="100">
-                  <img :src="post.user?.userAvatar" alt="头像" />
+                  <img
+                    alt="avatar"
+                    :src="post.user?.userAvatar"
+                    v-if="post.user?.userAvatar !== ''"
+                  />
+                  <div v-else>
+                    {{ post.user?.userName }}
+                  </div>
                 </a-avatar>
               </a-col>
               <a-col :span="16">
-                <div class="info">帖子作者：{{ post.user.userName }}</div>
+                <div class="info">帖子作者：{{ post?.user.userName }}</div>
                 <div class="info">
                   提交时间：{{
                     moment(post.createTime).format("YYYY-MM-DD hh:mm")
@@ -37,7 +44,6 @@
                     moment(post.updateTime).format("YYYY-MM-DD hh:mm")
                   }}
                 </div>
-                <div class="info">评论数：{{ post.favourNum }}</div>
               </a-col>
             </a-row>
             <a-divider />
@@ -75,6 +81,7 @@ import {
   PostComment,
   PostCommentAddRequest,
   PostCommentControllerService,
+  PostCommentQueryRequest,
   PostControllerService,
   PostVO,
 } from "../../generated";
@@ -92,6 +99,13 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   id: () => "",
 });
+const commentSearchParams = ref({
+  postId: props.id as any,
+  pageSize: 10,
+  current: 1,
+  reviewStatus: 1, //已审核通过
+} as PostCommentQueryRequest);
+const commentList = ref<Array<PostComment>>();
 
 const loadData = async () => {
   const res = await PostControllerService.getPostVoByIdUsingGet(
@@ -106,14 +120,14 @@ const loadData = async () => {
   //拿到当前帖子通过审核的题解
   // 校验分页数量
   if (
-    !commentSearchParamsw.value.pageSize ||
-    commentSearchParamsw.value.pageSize <= 0
+    !commentSearchParams.value.pageSize ||
+    commentSearchParams.value.pageSize <= 0
   ) {
-    commentSearchParamsw.value.pageSize = 5;
+    commentSearchParams.value.pageSize = 5;
   }
   const commentRes =
     await PostCommentControllerService.listPostCommentVoByPageUsingPost(
-      commentSearchParamsw.value as any
+      commentSearchParams.value
     );
   if (commentRes.code === 0) {
     commentList.value = commentRes.data.records;
@@ -128,14 +142,6 @@ onMounted(() => {
 const comment = ref({
   content: "# 说点什么...",
 } as PostCommentAddRequest);
-
-const commentSearchParamsw = ref({
-  postId: props.id,
-  pageSize: 10,
-  current: 1,
-  reviewStatus: 1, //已审核通过
-});
-const commentList = ref<Array<PostComment>>();
 
 const onContentChange = (v: string) => {
   comment.value.content = v;

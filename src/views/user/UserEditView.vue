@@ -140,7 +140,11 @@
 </template>
 <script lang="ts" setup>
 import { computed, onMounted, ref } from "vue";
-import { UserControllerService, UserVO } from "../../generated";
+import {
+  FileControllerService,
+  UserControllerService,
+  UserVO,
+} from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRoute, useRouter } from "vue-router";
 import { useStore } from "vuex";
@@ -167,13 +171,6 @@ const form = ref({
   userPhone: "",
   userMail: "",
 });
-//隐私处理函数
-const doPrivacy = (str: string) => {
-  if (str.length < 3) {
-    return str;
-  }
-  return str.substring(0, 2) + "****" + str.substring(str.length - 2);
-};
 const loadData = async () => {
   const route = useRoute();
   const userId = route.params.id;
@@ -186,7 +183,6 @@ const loadData = async () => {
     // 隐私处理
     form.value.userPhone = res.data?.userPhone as string;
     form.value.userMail = res.data?.userMail as string;
-    console.log(res.data);
   } else {
     message.error("加载失败！ " + res.message);
   }
@@ -197,11 +193,53 @@ onMounted(() => {
 
 const file = ref();
 
-const onChange = (_: any, currentFile: any) => {
+// 节流：记录上次上传时间，2s 内只允许一次上传
+const lastUploadTime = ref<number>(0);
+
+const doUpload = async (currentFile: any) => {
+  // 校验是否为图片
+  const isImage = currentFile.file?.type?.startsWith("image/");
+  if (!isImage) {
+    message.error("只能上传图片文件！");
+    return;
+  }
+
+  // 显示上传中状态
   file.value = {
     ...currentFile,
-    // url: URL.createObjectURL(currentFile.file),
+    status: "uploading",
+    percent: currentFile.percent ?? 0,
   };
+
+  const res = await FileControllerService.uploadFileUsingPost(
+    currentFile.file,
+    "user_avatar"
+  );
+  if (res.code === 0) {
+    form.value.userAvatar = res.data as string;
+    message.success("上传成功！");
+    file.value = {
+      ...currentFile,
+      url: form.value.userAvatar,
+      status: "done",
+      percent: 100,
+    };
+  } else {
+    message.error("上传失败！" + res.message);
+    file.value = {
+      ...currentFile,
+      status: "error",
+    };
+  }
+};
+
+const onChange = async (_: any, currentFile: any) => {
+  const now = Date.now();
+  if (now - lastUploadTime.value < 2000) {
+    return;
+  }
+  lastUploadTime.value = now;
+  await doUpload(currentFile);
 };
 const onProgress = (currentFile: any) => {
   file.value = currentFile;

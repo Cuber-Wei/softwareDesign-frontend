@@ -117,7 +117,12 @@
                 style="margin-left: 16px"
                 type="primary"
                 @click="getCode"
-                >获取验证码
+                :disabled="isVerityButtonDisabled"
+                >{{
+                  isVerityButtonDisabled
+                    ? `${coldDownTime}秒后可重发`
+                    : "获取验证码"
+                }}
               </a-button>
             </a-form-item>
             <a-form-item>
@@ -184,7 +189,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, ref } from "vue";
+import { reactive, ref, onUnmounted } from "vue";
 import { SmsControllerService, UserControllerService } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
 import { useRouter } from "vue-router";
@@ -193,6 +198,10 @@ import { IconEmail, IconLock, IconUser } from "@arco-design/web-vue/es/icon";
 
 const router = useRouter();
 const store = useStore();
+const isVerityButtonDisabled = ref(false);
+const coldDownTime = ref(60);
+// 倒计时定时器 id
+const cooldownTimer = ref<number | null>(null);
 const formAccPass = reactive({
   userAccount: "",
   userPassword: "",
@@ -214,12 +223,39 @@ const getCode = async () => {
   if (!formVerity.userMail || formVerity.userMail === "") {
     message.error("请输入邮箱！");
   }
+  // 启动倒计时：每秒递减 coldDownTime，直到 0
+  if (cooldownTimer.value) {
+    clearInterval(cooldownTimer.value);
+    cooldownTimer.value = null;
+  }
+  isVerityButtonDisabled.value = true;
+  coldDownTime.value = 60;
+  cooldownTimer.value = window.setInterval(() => {
+    if (coldDownTime.value <= 1) {
+      // 倒计时结束
+      if (cooldownTimer.value) {
+        clearInterval(cooldownTimer.value);
+        cooldownTimer.value = null;
+      }
+      isVerityButtonDisabled.value = false;
+      coldDownTime.value = 60;
+    } else {
+      coldDownTime.value -= 1;
+    }
+  }, 1000);
   const res = await SmsControllerService.sendMailRegisterUsingPost(formVerity);
   if (res.code === 0) {
     // 获取到验证码
     trueCode.value = res.data;
   }
 };
+
+onUnmounted(() => {
+  if (cooldownTimer.value) {
+    clearInterval(cooldownTimer.value);
+    cooldownTimer.value = null;
+  }
+});
 const onFinish = (value: any) => {
   if (value !== trueCode.value) {
     verityCodeProps.value.error = true;

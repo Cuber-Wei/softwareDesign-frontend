@@ -81,11 +81,10 @@ export const routes: Array<RouteRecordRaw> = [
     name: "审核",
     component: ReviewView,
     meta: {
-      hideInMenu: true,
-      access: ACCESSENUM.USER,
+      hideInMenu: false,
+      access: ACCESSENUM.ADMIN,
     },
   },
-
   {
     path: "/questions",
     name: "题目",

@@ -49,6 +49,32 @@
               <a-button class="userButton" @click="toEditDetail(currUser)"
                 >修改资料
               </a-button>
+              <a-button
+                class="userButton"
+                @click="
+                  () => {
+                    isMadelVisible = true;
+                  }
+                "
+                status="danger"
+                v-if="currUser?.userRole === 'user'"
+                >注销账号
+              </a-button>
+              <a-modal
+                :visible="isMadelVisible"
+                @ok="deleteAccount"
+                @cancel="
+                  () => {
+                    isMadelVisible = false;
+                  }
+                "
+                unmountOnClose
+              >
+                <template #title> 危险操作！ </template>
+                <div>
+                  注销账号是个危险操作，注销后您将无法通过此账号进行登录！请问您是否确认注销？
+                </div>
+              </a-modal>
               <a-badge :count="0" v-if="currUser?.userRole === 'admin'">
                 <a-button class="userButton" @click="toReview"
                   >审核事项
@@ -118,9 +144,27 @@
                     <a-space>
                       <a-button
                         type="primary"
-                        @click="router.push(`/view/post/${record.postId}`)"
-                        >查看</a-button
+                        status="danger"
+                        @click="
+                          () => {
+                            isConfirmModalVisible = true;
+                          }
+                        "
+                        >删除</a-button
                       >
+                      <a-modal
+                        :visible="isConfirmModalVisible"
+                        @ok="deletePost(record)"
+                        @cancel="
+                          () => {
+                            isConfirmModalVisible = true;
+                          }
+                        "
+                        unmountOnClose
+                      >
+                        <template #title> 危险操作！ </template>
+                        <div>确认删除该帖子？</div>
+                      </a-modal>
                     </a-space>
                   </template>
                 </a-table>
@@ -175,9 +219,27 @@
                     <a-space>
                       <a-button
                         type="primary"
-                        @click="router.push(`/view/post/${record.postId}`)"
-                        >查看所在帖子</a-button
+                        status="danger"
+                        @click="
+                          () => {
+                            isConfirmModalVisible = true;
+                          }
+                        "
+                        >删除</a-button
                       >
+                      <a-modal
+                        :visible="isConfirmModalVisible"
+                        @ok="deletePostComment(record)"
+                        @cancel="
+                          () => {
+                            isConfirmModalVisible = true;
+                          }
+                        "
+                        unmountOnClose
+                      >
+                        <template #title> 危险操作！ </template>
+                        <div>确认删除该评论？</div>
+                      </a-modal>
                     </a-space>
                   </template>
                 </a-table>
@@ -242,11 +304,27 @@
                     <a-space>
                       <a-button
                         type="primary"
+                        status="danger"
                         @click="
-                          router.push(`/view/writeUp/${record.writeUpId}`)
+                          () => {
+                            isConfirmModalVisible = true;
+                          }
                         "
-                        >查看</a-button
+                        >删除</a-button
                       >
+                      <a-modal
+                        :visible="isConfirmModalVisible"
+                        @ok="deleteWriteUp(record)"
+                        @cancel="
+                          () => {
+                            isConfirmModalVisible = true;
+                          }
+                        "
+                        unmountOnClose
+                      >
+                        <template #title> 危险操作！ </template>
+                        <div>确认删除该题解？</div>
+                      </a-modal>
                     </a-space>
                   </template>
                 </a-table>
@@ -276,7 +354,6 @@ import {
 import { onMounted, ref } from "vue";
 import moment from "moment";
 import message from "@arco-design/web-vue/es/message";
-import { title } from "process";
 
 const router = useRouter();
 const searchParams = ref({
@@ -347,8 +424,6 @@ const loadData = async () => {
   } else {
     message.error("加载失败！ " + writeUpRes.message);
   }
-  console.log(dataList.value);
-  console.log(totalList.value);
 };
 onMounted(() => {
   loadData();
@@ -359,6 +434,63 @@ const toEditDetail = (data: any) => {
     path: `/user/edit/${data?.userId}`,
   });
 };
+
+const isMadelVisible = ref(false);
+const isConfirmModalVisible = ref(false);
+const deleteAccount = async () => {
+  const res = await UserControllerService.deleteUserUsingPost({
+    id: currUser.value.userId as any,
+  });
+  if (res.code === 0) {
+    message.success("账号注销成功，正在跳转到首页...");
+    setTimeout(() => {
+      router.push({ path: "/" });
+    }, 1500);
+  } else {
+    message.error("账号注销失败！ " + res.message);
+  }
+  isConfirmModalVisible.value = false;
+};
+const deletePost = async (post: PostVO) => {
+  const res = await PostControllerService.deletePostUsingPost({
+    id: post.postId as any,
+  });
+  if (res.code === 0) {
+    // 更新页面
+    message.success("删除题解成功！");
+    await loadData();
+  } else {
+    message.error("删除题解失败！ " + res.message);
+  }
+  isConfirmModalVisible.value = false;
+};
+const deletePostComment = async (postComment: PostCommentVO) => {
+  const res = await PostCommentControllerService.deletePostCommentUsingPost({
+    id: postComment.postCommentId as any,
+  });
+  if (res.code === 0) {
+    // 更新页面
+    message.success("删除题解成功！");
+    await loadData();
+  } else {
+    message.error("删除题解失败！ " + res.message);
+  }
+  isConfirmModalVisible.value = false;
+};
+const deleteWriteUp = async (writeUp: WriteUpVO) => {
+  const res = await WriteUpControllerService.deleteWriteUpUsingPost({
+    id: writeUp.writeUpId as any,
+  });
+  if (res.code === 0) {
+    // 更新页面
+    message.success("删除题解成功！");
+    await loadData();
+  } else {
+    message.error("删除题解失败！ " + res.message);
+  }
+  isConfirmModalVisible.value = false;
+};
+
 const toReview = () => {
   router.push({
     path: "/review",

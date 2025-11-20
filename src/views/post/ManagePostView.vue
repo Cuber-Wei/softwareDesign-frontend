@@ -101,16 +101,8 @@ const columns = [
     dataIndex: "title",
   },
   {
-    title: "摘要",
-    dataIndex: "abstract",
-  },
-  {
     title: "标签",
     slotName: "tag",
-  },
-  {
-    title: "评论数",
-    dataIndex: "commentNum",
   },
   {
     title: "创建时间",
@@ -119,10 +111,6 @@ const columns = [
   {
     title: "更新时间",
     slotName: "updateTime",
-  },
-  {
-    title: "创建用户",
-    slotName: "userId",
   },
   {
     title: "操作",
@@ -151,11 +139,6 @@ const onPageChange = (page: number) => {
     ...searchParams.value,
     current: page,
   };
-};
-const toUser = (id: string) => {
-  router.push({
-    path: `/center/${id}`,
-  });
 };
 </script>
 <style scoped>

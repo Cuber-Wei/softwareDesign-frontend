@@ -86,7 +86,7 @@ watchEffect(() => {
 const columns = [
   {
     title: "ID",
-    dataIndex: "id",
+    dataIndex: "userId",
   },
   {
     title: "用户名",
@@ -97,20 +97,12 @@ const columns = [
     dataIndex: "userName",
   },
   {
-    title: "简介",
-    dataIndex: "userProfile",
-  },
-  {
     title: "手机号",
     dataIndex: "userPhone",
   },
   {
     title: "邮箱",
     dataIndex: "userMail",
-  },
-  {
-    title: "微信开放平台Id",
-    dataIndex: "wxOpenId",
   },
   {
     title: "注册时间",
@@ -150,6 +142,19 @@ const handleClick = () => {
 };
 const handleCancel = () => {
   visible.value = false;
+};
+const resetPassword = async (user: User) => {
+  const res = await UserControllerService.resetPassWordUsingPost({
+    userAccount: user.userAccount,
+    userPassword: "12345678",
+    checkPassword: "12345678",
+    userMail: user.userMail,
+  });
+  if (res.code === 0) {
+    message.success("重置密码成功！新密码为：12345678");
+  } else {
+    message.error("重置密码失败！ " + res.message);
+  }
 };
 const onPageChange = (page: number) => {
   searchParams.value = {

@@ -1,6 +1,12 @@
 <template>
   <div id="reviewView">
     <h2 style="margin-bottom: 32px">审核</h2>
+    <a-button
+      type="primary"
+      @click="loadData"
+      style="margin-bottom: 16px; width: 100px"
+      >刷新数据</a-button
+    >
     <a-tabs default-active-key="0">
       <a-tab-pane key="0">
         <template #title>
@@ -560,7 +566,6 @@ const loadData = async () => {
   } else {
     message.error("加载数据失败！ " + res.message);
   }
-  console.log(dataList.value);
 };
 
 onMounted(() => {

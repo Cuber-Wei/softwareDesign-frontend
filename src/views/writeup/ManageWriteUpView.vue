@@ -12,6 +12,15 @@
       }"
       @page-change="onPageChange"
     >
+      <template #reviewStatus="{ record }">
+        <a-space>
+          <a-tag v-if="record.reviewStatus === 1" color="green">已通过</a-tag>
+          <a-tag v-else-if="record.reviewStatus === 2" color="red"
+            >已退回</a-tag
+          >
+          <a-tag v-else color="gray">待审核</a-tag>
+        </a-space>
+      </template>
       <template #tag="{ record }">
         <a-space wrap>
           <a-tag
@@ -34,7 +43,6 @@
       </template>
       <template #optional="{ record }">
         <a-space>
-          <a-button type="primary" @click="doUpdate(record)">查看详情</a-button>
           <a-button status="danger" @click="doDelete(record)">删除</a-button>
         </a-space>
       </template>
@@ -54,7 +62,6 @@
 import { onMounted, ref, watchEffect } from "vue";
 import { WriteUp, WriteUpControllerService } from "../../generated";
 import message from "@arco-design/web-vue/es/message";
-import { useRouter } from "vue-router";
 import moment from "moment";
 
 const dataList = ref([]);
@@ -95,7 +102,7 @@ const columns = [
   },
   {
     title: "审核状态",
-    dataIndex: "reviewStatus",
+    slotName: "reviewStatus",
   },
   {
     title: "标签",
@@ -110,23 +117,10 @@ const columns = [
     slotName: "updateTime",
   },
   {
-    title: "创建用户",
-    dataIndex: "userVO",
-  },
-  {
     title: "操作",
     slotName: "optional",
   },
 ];
-const router = useRouter();
-const doUpdate = (writeUp: WriteUp) => {
-  router.push({
-    path: "/update/writeUp",
-    query: {
-      id: writeUp.writeUpId,
-    },
-  });
-};
 const doDelete = async (writeUp: WriteUp) => {
   const res = await WriteUpControllerService.deleteWriteUpUsingPost({
     id: writeUp.writeUpId,

@@ -71,7 +71,6 @@ const loadData = async () => {
   if (res.code === 0) {
     dataList.value = res.data.records;
     total.value = res.data.total;
-    console.log(res.data.records);
   } else {
     message.error("加载数据失败！ " + res.message);
   }
@@ -129,14 +128,6 @@ const columns = [
   {
     title: "测试用例",
     dataIndex: "judgeCase",
-  },
-  {
-    title: "创建用户id",
-    dataIndex: "userId",
-  },
-  {
-    title: "创建用户",
-    dataIndex: "userVO",
   },
   {
     title: "操作",

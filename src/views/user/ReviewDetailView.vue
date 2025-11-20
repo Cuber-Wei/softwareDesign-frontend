@@ -56,10 +56,10 @@ const id = route.params.id as string;
 let type = "";
 let typeNum = 0;
 if (route.path.startsWith("/review/")) type = route.path.slice(8, -1);
-if (type.startsWith("post")) {
-  typeNum = 0;
-} else if (type.startsWith("postComment")) {
+if (type.startsWith("postComment")) {
   typeNum = 1;
+} else if (type.startsWith("post")) {
+  typeNum = 0;
 } else if (type.startsWith("writeUp")) {
   typeNum = 2;
 } else {

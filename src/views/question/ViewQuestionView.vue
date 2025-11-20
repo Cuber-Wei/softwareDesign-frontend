@@ -154,7 +154,6 @@
 import { defineProps, onMounted, ref, watchEffect, withDefaults } from "vue";
 import message from "@arco-design/web-vue/es/message";
 import {
-  PostAddRequest,
   QuestionAddRequest,
   QuestionControllerService,
   QuestionSubmitAddRequest,

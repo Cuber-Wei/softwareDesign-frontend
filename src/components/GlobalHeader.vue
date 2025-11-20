@@ -73,7 +73,14 @@
                 : '#14a9f8',
           }"
         >
-          {{ showName }}
+          <img
+            alt="avatar"
+            :src="store.state.user.loginUser?.userAvatar"
+            v-if="store.state.user.loginUser?.userAvatar !== ''"
+          />
+          <div v-else>
+            {{ showName }}
+          </div>
         </a-avatar>
         <template #content>
           <a-doption v-if="showName === '未登录'" @click="toLogin"
@@ -109,7 +116,8 @@ const visibleRoutes = computed(() => {
     if (
       item.meta?.hideInMenu ||
       item.name?.slice(0, 2) === "管理" ||
-      item.name?.slice(0, 2) === "发布"
+      item.name?.slice(0, 2) === "发布" ||
+      item.name?.slice(0, 2) === "审核"
     )
       return false;
     //鉴权
@@ -121,9 +129,9 @@ const visibleRoutes = computed(() => {
 });
 const manageMenu = computed(() => {
   return routes.filter((item) => {
-    //是否以管理开头
+    //是否以管理开头或者为审核
     return (
-      item.name?.startsWith("管理") &&
+      (item.name?.startsWith("管理") || item.name?.startsWith("审核")) &&
       !item.meta?.hideInMenu &&
       checkAccess(store.state.user.loginUser, item?.meta?.access as string)
     );

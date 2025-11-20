@@ -53,7 +53,6 @@ const loadData = async () => {
   const res: any = await PostControllerService.getPostVoByIdUsingGet(id as any);
   if (res.code === 0) {
     post.value = res.data;
-    console.log(post.value);
     if (!post.value.tag) {
       post.value.tag = ["简单"];
     } else {
