@@ -6,6 +6,7 @@ export type PostQueryRequest = {
     content?: string;
     current?: number;
     notPostId?: number;
+    notReviewStatus?: number;
     orTag?: Array<string>;
     pageSize?: number;
     postId?: number;

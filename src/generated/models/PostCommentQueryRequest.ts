@@ -6,6 +6,7 @@ export type PostCommentQueryRequest = {
     content?: string;
     current?: number;
     notPostCommentId?: number;
+    notReviewStatus?: number;
     pageSize?: number;
     postCommentId?: number;
     postId?: number;

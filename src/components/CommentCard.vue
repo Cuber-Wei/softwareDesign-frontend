@@ -1,24 +1,6 @@
 <template>
   <a-card class="card">
     <a-row style="align-items: center">
-      <!--      <a-col :span="8">-->
-      <!--        <a-avatar :size="100">-->
-      <!--          <img :src="props.post.user?.userAvatar" alt="头像" />-->
-      <!--        </a-avatar>-->
-      <!--      </a-col>-->
-      <!--      <a-col :span="16">-->
-      <!--        <div class="info">评论作者：{{ props.post.user?.userName }}</div>-->
-      <!--        <div class="info">评论时间：{{ props.post?.createTime }}</div>-->
-      <!--        <div class="info">发布时间：{{ props.post?.updateTime }}</div>-->
-      <!--        <div-->
-      <!--          class="info"-->
-      <!--          v-if="store.state.user?.loginUser?.userRole === 'admin'"-->
-      <!--        >-->
-      <!--          <a-button>删除</a-button>-->
-      <!--        </div>-->
-      <!--      </a-col>-->
-      <!--    </a-row>-->
-      <!--    <Viewer :plugins="plugins" :value="props.post?.content" />-->
       <a-col :span="8">
         <a-avatar :size="100">
           <img alt="头像" src="@/assets/test-avatar.jpg" />

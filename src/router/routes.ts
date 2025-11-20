@@ -221,7 +221,7 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/review/writeup/:id",
+    path: "/review/writeUp/:id",
     name: "审核题解",
     component: ReviewDetailView,
     props: true,
@@ -231,8 +231,8 @@ export const routes: Array<RouteRecordRaw> = [
     },
   },
   {
-    path: "/review/post/:id",
-    name: "审核帖子",
+    path: "/review/postComment/:id",
+    name: "审核帖子评论",
     component: ReviewDetailView,
     props: true,
     meta: {

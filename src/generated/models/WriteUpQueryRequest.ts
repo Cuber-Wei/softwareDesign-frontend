@@ -5,6 +5,7 @@
 export type WriteUpQueryRequest = {
     content?: string;
     current?: number;
+    notReviewStatus?: number;
     notWriteUpId?: number;
     orTag?: Array<string>;
     pageSize?: number;

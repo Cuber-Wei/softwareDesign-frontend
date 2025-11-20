@@ -49,7 +49,7 @@
               <a-button class="userButton" @click="toEditDetail(currUser)"
                 >修改资料
               </a-button>
-              <a-badge :count="9" v-if="currUser?.userRole === 'admin'">
+              <a-badge :count="0" v-if="currUser?.userRole === 'admin'">
                 <a-button class="userButton" @click="toReview"
                   >审核事项
                 </a-button>
@@ -61,7 +61,7 @@
       <a-layout class="content">
         <a-layout>
           <a-layout-content class="post-show">
-            <h2>帖子展示页</h2>
+            <h2>我发布的</h2>
           </a-layout-content>
         </a-layout>
       </a-layout>
@@ -70,12 +70,47 @@
 </template>
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
-import { UserControllerService, UserVO } from "../generated";
+import {
+  PostCommentControllerService,
+  PostCommentQueryRequest,
+  PostCommentVO,
+  PostControllerService,
+  PostQueryRequest,
+  PostVO,
+  UserControllerService,
+  UserVO,
+  WriteUpControllerService,
+  WriteUpQueryRequest,
+  WriteUpVO,
+} from "../generated";
 import { onMounted, ref } from "vue";
 import message from "@arco-design/web-vue/es/message";
 
 const router = useRouter();
-
+const searchParams = ref({
+  post: {
+    current: 0,
+    pageSize: 10,
+  } as PostQueryRequest,
+  postComment: {
+    current: 0,
+    pageSize: 10,
+  } as PostCommentQueryRequest,
+  writeUp: {
+    current: 0,
+    pageSize: 10,
+  } as WriteUpQueryRequest,
+});
+const dataList = ref({
+  post: [] as PostVO[],
+  postComment: [] as PostCommentVO[],
+  writeUp: [] as WriteUpVO[],
+});
+const totalList = ref({
+  postTotal: 0,
+  commentTotal: 0,
+  writeUpTotal: 0,
+});
 // 获取用户信息并且进行处理
 let currUser = ref<UserVO>({});
 const loadData = async () => {
@@ -88,6 +123,40 @@ const loadData = async () => {
   } else {
     message.error("加载失败！ " + res.message);
   }
+  //获取当前用户发表过的帖子
+  const postRes = await PostControllerService.listMyPostVoByPageUsingPost(
+    searchParams.value.post
+  );
+  if (postRes.code === 0) {
+    dataList.value.post = postRes.data.records as any;
+    totalList.value.postTotal = postRes.data.total as any;
+  } else {
+    message.error("加载失败！ " + postRes.message);
+  }
+  //获取当前用户发表的评论
+  const postCommentRes =
+    await PostCommentControllerService.listMyPostCommentVoByPageUsingPost(
+      searchParams.value.postComment
+    );
+  if (postCommentRes.code === 0) {
+    dataList.value.postComment = postCommentRes.data.records as any;
+    totalList.value.commentTotal = postCommentRes.data.total as any;
+  } else {
+    message.error("加载失败！ " + postCommentRes.message);
+  }
+  //获取当前用户发表的题解
+  const writeUpRes =
+    await WriteUpControllerService.listMyWriteUpVoByPageUsingPost(
+      searchParams.value.writeUp
+    );
+  if (writeUpRes.code === 0) {
+    dataList.value.writeUp = writeUpRes.data.records as any;
+    totalList.value.writeUpTotal = writeUpRes.data.total as any;
+  } else {
+    message.error("加载失败！ " + writeUpRes.message);
+  }
+  console.log(dataList.value);
+  console.log(totalList.value);
 };
 onMounted(() => {
   loadData();

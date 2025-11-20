@@ -4,19 +4,7 @@
 /* eslint-disable */
 export type AuditRequest = {
     id?: number;
-    operation?: AuditRequest.operation;
-    type?: AuditRequest.type;
+    operation?: number;
+    type?: number;
 };
-export namespace AuditRequest {
-    export enum operation {
-        WAITING = 'WAITING',
-        PASSED = 'PASSED',
-        RETURNED = 'RETURNED',
-    }
-    export enum type {
-        POST = 'POST',
-        COMMENT = 'COMMENT',
-        WRITE_UP = 'WriteUp',
-    }
-}
 
