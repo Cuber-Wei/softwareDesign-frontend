@@ -62,6 +62,196 @@
         <a-layout>
           <a-layout-content class="post-show">
             <h2>我发布的</h2>
+            <a-tabs default-active-key="0">
+              <a-tab-pane key="0" title="帖子">
+                <a-space
+                  >每页帖子数量
+                  <a-input-number
+                    v-model="searchParams.post.pageSize"
+                    min="1"
+                    placeholder="每页帖子数量"
+                    size="small"
+                    style="width: 200px"
+                  />
+                </a-space>
+                <a-divider :size="0"></a-divider>
+                <a-table
+                  :columns="postColumns"
+                  :data="dataList.post"
+                  :pagination="{
+                    showTotal: true,
+                    pageSize: searchParams.post.pageSize,
+                    current: searchParams.post.current,
+                    total: totalList.postTotal,
+                  }"
+                  @page-change="onPostPageChange"
+                >
+                  <template #tag="{ record }">
+                    <a-space wrap>
+                      <a-tag
+                        v-for="(item, index) of record.tag"
+                        :key="index"
+                        color="green"
+                        >{{ item }}</a-tag
+                      >
+                    </a-space>
+                  </template>
+                  <template #createTime="{ record }">
+                    <a-space>
+                      {{
+                        moment(record.createTime).format("YYYY-MM-DD HH:mm:ss")
+                      }}
+                    </a-space>
+                  </template>
+                  <template #reviewStatus="{ record }">
+                    <a-space>
+                      <a-tag v-if="record.reviewStatus === 1" color="green"
+                        >已通过</a-tag
+                      >
+                      <a-tag v-else-if="record.reviewStatus === 2" color="red"
+                        >已退回</a-tag
+                      >
+                      <a-tag v-else color="gray">待审核</a-tag>
+                    </a-space>
+                  </template>
+                  <template #optional="{ record }">
+                    <a-space>
+                      <a-button
+                        type="primary"
+                        @click="router.push(`/view/post/${record.postId}`)"
+                        >查看</a-button
+                      >
+                    </a-space>
+                  </template>
+                </a-table>
+              </a-tab-pane>
+              <a-tab-pane key="1" title="评论">
+                <a-space
+                  >每页评论数量
+                  <a-input-number
+                    v-model="searchParams.postComment.pageSize"
+                    min="1"
+                    placeholder="每页评论数量"
+                    size="small"
+                    style="width: 200px"
+                  />
+                </a-space>
+                <a-divider :size="0"></a-divider>
+                <a-table
+                  :columns="postCommentColumns"
+                  :data="dataList.postComment"
+                  :pagination="{
+                    showTotal: true,
+                    pageSize: searchParams.postComment.pageSize,
+                    current: searchParams.postComment.current,
+                    total: totalList.commentTotal,
+                  }"
+                  @page-change="onPostCommentPageChange"
+                >
+                  <template #postCommentId="{ record }">
+                    <a-space wrap>
+                      {{ record.postCommentId }}
+                    </a-space>
+                  </template>
+                  <template #createTime="{ record }">
+                    <a-space>
+                      {{
+                        moment(record.createTime).format("YYYY-MM-DD HH:mm:ss")
+                      }}
+                    </a-space>
+                  </template>
+                  <template #reviewStatus="{ record }">
+                    <a-space>
+                      <a-tag v-if="record.reviewStatus === 1" color="green"
+                        >已通过</a-tag
+                      >
+                      <a-tag v-else-if="record.reviewStatus === 2" color="red"
+                        >已退回</a-tag
+                      >
+                      <a-tag v-else color="gray">待审核</a-tag>
+                    </a-space>
+                  </template>
+                  <template #optional="{ record }">
+                    <a-space>
+                      <a-button
+                        type="primary"
+                        @click="router.push(`/view/post/${record.postId}`)"
+                        >查看所在帖子</a-button
+                      >
+                    </a-space>
+                  </template>
+                </a-table>
+              </a-tab-pane>
+              <a-tab-pane key="2" title="题解">
+                <a-space
+                  >每页题解数量
+                  <a-input-number
+                    v-model="searchParams.writeUp.pageSize"
+                    min="1"
+                    placeholder="每页题解数量"
+                    size="small"
+                    style="width: 200px"
+                  />
+                </a-space>
+                <a-divider :size="0"></a-divider>
+                <a-table
+                  :columns="writeUpColumns"
+                  :data="dataList.writeUp"
+                  :pagination="{
+                    showTotal: true,
+                    pageSize: searchParams.writeUp.pageSize,
+                    current: searchParams.writeUp.current,
+                    total: totalList.writeUpTotal,
+                  }"
+                  @page-change="onWriteUpPageChange"
+                >
+                  <template #writeUpId="{ record }">
+                    <a-space wrap>
+                      {{ record.writeUpId }}
+                    </a-space>
+                  </template>
+                  <template #tag="{ record }">
+                    <a-space wrap>
+                      <a-tag
+                        v-for="(item, index) of record.tag"
+                        :key="index"
+                        color="green"
+                        >{{ item }}</a-tag
+                      >
+                    </a-space>
+                  </template>
+                  <template #createTime="{ record }">
+                    <a-space>
+                      {{
+                        moment(record.createTime).format("YYYY-MM-DD HH:mm:ss")
+                      }}
+                    </a-space>
+                  </template>
+                  <template #reviewStatus="{ record }">
+                    <a-space>
+                      <a-tag v-if="record.reviewStatus === 1" color="green"
+                        >已通过</a-tag
+                      >
+                      <a-tag v-else-if="record.reviewStatus === 2" color="red"
+                        >已退回</a-tag
+                      >
+                      <a-tag v-else color="gray">待审核</a-tag>
+                    </a-space>
+                  </template>
+                  <template #optional="{ record }">
+                    <a-space>
+                      <a-button
+                        type="primary"
+                        @click="
+                          router.push(`/view/writeUp/${record.writeUpId}`)
+                        "
+                        >查看</a-button
+                      >
+                    </a-space>
+                  </template>
+                </a-table>
+              </a-tab-pane>
+            </a-tabs>
           </a-layout-content>
         </a-layout>
       </a-layout>
@@ -84,7 +274,9 @@ import {
   WriteUpVO,
 } from "../generated";
 import { onMounted, ref } from "vue";
+import moment from "moment";
 import message from "@arco-design/web-vue/es/message";
+import { title } from "process";
 
 const router = useRouter();
 const searchParams = ref({
@@ -172,6 +364,50 @@ const toReview = () => {
     path: "/review",
     replace: true,
   });
+};
+
+// 表格列定义
+const postColumns = [
+  { title: "标题", dataIndex: "title" },
+  { title: "标签", slotName: "tag" },
+  { title: "发布时间", slotName: "createTime" },
+  { title: "审核状态", slotName: "reviewStatus" },
+  { title: "操作", slotName: "optional" },
+];
+
+const postCommentColumns = [
+  { title: "内容", dataIndex: "content" },
+  { title: "发布时间", slotName: "createTime" },
+  { title: "审核状态", slotName: "reviewStatus" },
+  { title: "操作", slotName: "optional" },
+];
+
+const writeUpColumns = [
+  { title: "标题", dataIndex: "title" },
+  { title: "标签", slotName: "tag" },
+  { title: "发布时间", slotName: "createTime" },
+  { title: "审核状态", slotName: "reviewStatus" },
+  { title: "操作", slotName: "optional" },
+];
+
+// 分页处理器
+const onPostPageChange = (page: number) => {
+  searchParams.value.post = {
+    ...searchParams.value.post,
+    current: page,
+  } as any;
+};
+const onPostCommentPageChange = (page: number) => {
+  searchParams.value.postComment = {
+    ...searchParams.value.postComment,
+    current: page,
+  } as any;
+};
+const onWriteUpPageChange = (page: number) => {
+  searchParams.value.writeUp = {
+    ...searchParams.value.writeUp,
+    current: page,
+  } as any;
 };
 </script>
 <style scoped>
