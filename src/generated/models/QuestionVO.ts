@@ -5,6 +5,8 @@
 import type { JudgeConfig } from './JudgeConfig';
 import type { UserVO } from './UserVO';
 export type QuestionVO = {
+    acceptedNum?: number;
+    commitNum?: number;
     content?: string;
     createTime?: string;
     judgeConfig?: JudgeConfig;

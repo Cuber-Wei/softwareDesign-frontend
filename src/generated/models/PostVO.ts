@@ -4,6 +4,7 @@
 /* eslint-disable */
 import type { UserVO } from './UserVO';
 export type PostVO = {
+    commentNum?: number;
     content?: string;
     createTime?: string;
     postId?: number;

@@ -57,8 +57,10 @@
         <a-space>
           {{
             `${
-              record.submitNum ?? 0 ? record.acceptedNum / record.submitNum : 0
-            }%  (${record.acceptedNum ?? 0} / ${record.submitNum ?? 0})`
+              (record.commitNum ?? 0) != 0
+                ? (record.acceptedNum / record.commitNum) * 100
+                : 0
+            }%  (${record.acceptedNum ?? 0} / ${record.commitNum ?? 0})`
           }}
         </a-space>
       </template>
